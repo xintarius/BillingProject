@@ -4,27 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc366290-61f0-43d0-b2a5-d939f95d20d1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.rubocop.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.rubocop.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/layouts/application.html.erb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/layouts/mailer.html.erb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/layouts/mailer.text.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/mailer.text.html.haml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/brakeman" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/kamal" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/rubocop" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/thrust" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/boot.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/cache.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/database.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/deploy.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/queue.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/recurring.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/cable_schema.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/cache_schema.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/queue_schema.rb" beforeDir="false" />
-    </list>
+    <list default="true" id="cc366290-61f0-43d0-b2a5-d939f95d20d1" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,9 +13,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2sS2JYO4NTr88zkslJH7tZ62unZ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -45,7 +25,7 @@
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "develop",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -55,6 +35,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager" selected="Rails.BillingProject">
     <configuration name="BillingProject" type="RailsRunConfigurationType" factoryName="Rails">
       <module name="BillingProject" />
