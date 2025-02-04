@@ -8,3 +8,16 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+
+.log-section {
+    position: absolute;
+    left: 45%;
+    top: 25%;
+}
+
+.registration-section {
+    position: absolute;
+    left: 45%;
+    top: 25%;
+}
