@@ -23,6 +23,7 @@
 
 # Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*
+/db/test_data.csv
 !/storage/.keep
 /tmp/storage/*
 !/tmp/storage/

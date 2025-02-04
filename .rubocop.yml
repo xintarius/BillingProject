@@ -11,3 +11,5 @@ AllCops:
     - 'config.ru'
     - 'Rakefile'
     - 'spec/**/*'
+Style/FrozenStringLiteralComment:
+  Enabled: false
