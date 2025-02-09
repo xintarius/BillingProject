@@ -1,0 +1,57 @@
+.dashboard {
+    background-color: #F5F1E3;
+    display: flex;
+    min-height: 100vh;
+}
+.left-panel {
+    width: 20%;
+    display: block;
+    background: rgba(223, 95, 22, 0.4);
+    height: inherit;
+}
+
+.top-panel {
+    display: block;
+    background: rgba(254, 150, 56, 0.4);
+    height: 6rem;
+}
+
+.mid-panel {
+    display: flex;
+}
+
+.container {
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+.settings-container {
+    text-align: right;
+}
+
+.no-btn {
+    text-decoration: none;
+    border: none;
+    background: none;
+}
+
+.menu-container {
+    padding-bottom: 2rem;
+    text-align: center;
+    margin-top: 6rem;
+}
+
+.menu {
+    border-bottom: #F5F1E3 1px solid;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+}

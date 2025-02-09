@@ -11,6 +11,8 @@ gem 'csv'
 
 gem 'dotenv-rails'
 
+gem 'inline_svg'
+
 gem 'pg'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '>= 2.1'

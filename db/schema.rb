@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_03_162440) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_04_132630) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "city"
+    t.string "postal_code"
+    t.string "street"
+    t.string "building"
+    t.string "apartment"
+    t.string "postal_city"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
@@ -23,6 +34,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_03_162440) do
     t.integer "vat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "addresses_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["addresses_id"], name: "index_locations_on_addresses_id"
+    t.index ["company_id"], name: "index_locations_on_company_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -36,4 +57,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_03_162440) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "locations", "addresses", column: "addresses_id"
+  add_foreign_key "locations", "companies"
 end

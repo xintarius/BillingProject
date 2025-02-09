@@ -1,0 +1,6 @@
+.top-panel
+  .settings-container
+    = icon 'notifications'
+    = icon 'settings'
+    = button_to "Wyloguj", destroy_user_session_path, method: :delete, class: 'no-btn'
+    -# .settings= link_to settings_path

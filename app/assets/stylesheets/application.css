@@ -21,3 +21,12 @@
     left: 45%;
     top: 25%;
 }
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+}
