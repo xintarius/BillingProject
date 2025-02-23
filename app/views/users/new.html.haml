@@ -1,0 +1,6 @@
+= form_for @user, url: users_path, method: :post do |f|
+  = f.label 'email'
+  = f.text_field :email
+  = f.label 'hasło'
+  = f.password_field :password
+  = f.submit "Dodaj"

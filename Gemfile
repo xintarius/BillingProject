@@ -13,6 +13,14 @@ gem 'dotenv-rails'
 
 gem 'inline_svg'
 
+#gem 'sprockets-rails'
+
+# gem 'tesseract-ocr'
+#
+# gem 'mini_magick'
+
+gem 'sentry-rails'
+
 gem 'pg'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '>= 2.1'

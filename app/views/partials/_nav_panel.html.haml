@@ -3,4 +3,5 @@
     = icon 'notifications'
     = icon 'settings'
     = button_to "Wyloguj", destroy_user_session_path, method: :delete, class: 'no-btn'
+    = link_to "Użytkownicy", users_index_path
     -# .settings= link_to settings_path

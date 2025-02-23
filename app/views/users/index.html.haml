@@ -1,0 +1,16 @@
+%table.table
+  %thead
+    %tr
+      %th Id
+      %th Email
+      %th Utworzono
+      %th Zmodyfikowano
+  %tbody
+  - @users.each do |user|
+    %tr
+    %td= user.id
+    %td= user.email
+    %td= user.created_at
+    %td= user.updated_at
+
+= button_to "Nowy użytkownik", users_path
