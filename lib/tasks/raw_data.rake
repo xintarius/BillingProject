@@ -3,7 +3,6 @@ namespace :raw_data do
   desc 'Generating records from file'
   task generate_raw_data: :environment do
     file_path = Rails.root.join('db/test_data.csv').to_s
-    puts file_path.inspect
     return unless File.exist?(file_path)
 
 

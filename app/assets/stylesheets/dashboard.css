@@ -30,7 +30,10 @@
 }
 
 .settings-container {
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem;
+    gap: 1rem;
 }
 
 .no-btn {
@@ -45,6 +48,11 @@
     margin-top: 6rem;
 }
 
+.links-container {
+    text-align: left;
+    padding: 1rem;
+}
+
 .menu {
     border-bottom: #F5F1E3 1px solid;
 }
@@ -57,4 +65,10 @@ a {
 a:hover {
     text-decoration: none;
     color: black;
+}
+
+.companies-grid-container {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem 0 0 2rem;
 }

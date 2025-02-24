@@ -9,6 +9,7 @@ development:
   username: <%= ENV["DATABASE_USERNAME"] %>
   password: <%= ENV["DATABASE_PASSWORD"] %>
   host: <%= ENV["DATABASE_HOST"] %>
-  options: <%= ENV["DATABASE_OPTION"] %>
+  options: <%#= ENV["DATABASE_OPTION"] %>
   port: 5432
+  sslmode: require
   schema_search_path: public

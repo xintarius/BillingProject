@@ -2,8 +2,10 @@
 class InvoiceController < ApplicationController
   before_action :authenticate_user!
   layout 'dashboard_layout'
-  def index
+  def index; end
 
+  def new
+    @invoice = Invoice.new
   end
 end
 
