@@ -1,0 +1,5 @@
+.mid-panel
+  = form_with  url: new_invoice_path, method: :post do |f|
+    = f.text_field 'NIP'
+    = f.text_field 'Nazwa'
+    = f.submit 'Dodaj fakturę'

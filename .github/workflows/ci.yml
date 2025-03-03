@@ -14,7 +14,17 @@ jobs:
   development:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+
     steps:
+      - name: Set up repository
+        uses: actions/checkout@v3
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -22,10 +32,11 @@ jobs:
 
       - name: Install dependencies
         run: |
+          ls -l
           gem install bundler
           bundle install
 
       - name: Run tests
         run: |
-          bundle exec rake db:create db:migrate RAILS_ENV=develop
+          bundle exec rake db:create db:migrate RAILS_ENV=development
           bundle exec rspec

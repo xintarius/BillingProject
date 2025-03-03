@@ -3,8 +3,11 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 8.0.1'
 
+gem 'aws-sdk-s3'
 gem 'datagrid'
 gem 'devise'
+gem 'shrine'
+
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem 'propshaft'
 
@@ -14,11 +17,14 @@ gem 'dotenv-rails'
 
 gem 'inline_svg'
 
-#gem 'sprockets-rails'
+gem 'rtesseract'
 
-# gem 'tesseract-ocr'
-#
-# gem 'mini_magick'
+gem 'mini_magick'
+
+gem 'pdf-reader'
+
+
+#gem 'sprockets-rails'
 
 gem 'sentry-rails'
 
@@ -55,6 +61,7 @@ end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem 'rspec-rails'
   gem 'web-console'
 end
 
