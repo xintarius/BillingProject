@@ -6,6 +6,7 @@ gem 'rails', '~> 8.0.1'
 gem 'aws-sdk-s3'
 gem 'datagrid'
 gem 'devise'
+gem 'kaminari'
 gem 'shrine'
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]

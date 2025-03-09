@@ -1,5 +1,20 @@
 .mid-panel
-  = form_with  url: new_invoice_path, method: :post do |f|
-    = f.text_field 'NIP'
-    = f.text_field 'Nazwa'
-    = f.submit 'Dodaj fakturę'
+  = form_with model: @invoice, url: invoice_index_path, html: { multipart: true }, method: :post, class: 'add-invoices' do |f|
+    = f.file_field :file
+    = f.label 'Nip:'
+    = f.text_field :nip
+    = f.label 'Nazwa:'
+    = f.text_field :name
+    = f.label 'Nr faktury:'
+    = f.text_field :invoice_nr
+    -# = f.label 'Adres:'
+    -# = f.text_field :address
+    = f.label 'Data faktury:'
+    = f.text_field :invoice_date
+    = f.label 'brutto'
+    = f.text_field :brutto
+    = f.label 'vat'
+    = f.text_field :vat
+    = f.label 'netto'
+    = f.text_field :netto
+    = f.submit 'Dodaj fakturę', class: 'button'
