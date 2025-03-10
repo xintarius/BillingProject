@@ -81,3 +81,17 @@ a:hover {
 .button {
     margin-top: 2rem;
 }
+
+.flash {
+    padding: 0.5rem;
+    text-align: center;
+    align-items: center;
+}
+
+.notice {
+    background: green;
+}
+
+.error {
+    background: red;
+}
