@@ -4,7 +4,7 @@ class InvoiceController < ApplicationController
   layout 'dashboard_layout'
   def index
     @invoices_grid = InvoiceGrid.new(params[:invoice_grid_params])
-    @assets = @invoices_grid.assets.page(params[:page]).per(20)
+    @assets = @invoices_grid.assets.page(params[:page]).per(10)
   end
 
   def new
@@ -31,4 +31,3 @@ class InvoiceController < ApplicationController
     params.expect(invoice: %i[name invoice_date invoice_nr brutto vat netto]) if params[:invoice].present?
   end
 end
-

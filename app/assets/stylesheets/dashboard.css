@@ -95,3 +95,11 @@ a:hover {
 .error {
     background: red;
 }
+
+.settlements {
+    display: flex;
+}
+
+.invoice-status {
+    display: contents;
+}
