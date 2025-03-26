@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_07_214957) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_17_214559) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_07_214957) do
     t.boolean "image_pdf_created", default: false
     t.string "file_path"
     t.string "invoice_status", default: "initial"
+    t.string "description_error"
     t.index ["company_id"], name: "index_invoices_on_company_id"
     t.index ["invoice_type_id"], name: "index_invoices_on_invoice_types_id"
   end

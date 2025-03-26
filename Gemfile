@@ -8,6 +8,7 @@ gem 'datagrid'
 gem 'devise'
 gem 'groupdate'
 gem 'kaminari'
+gem 'ruby-vips'
 gem 'shrine'
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
@@ -72,3 +73,5 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
 end
+
+gem 'sidekiq', '~> 8.0'
