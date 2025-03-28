@@ -10,9 +10,9 @@ gem 'groupdate'
 gem 'kaminari'
 gem 'ruby-vips'
 gem 'shrine'
+gem 'whenever', require: false
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem 'propshaft'
 
 gem 'csv'
 
@@ -26,8 +26,7 @@ gem 'mini_magick'
 
 gem 'pdf-reader'
 
-
-#gem 'sprockets-rails'
+gem 'sprockets-rails'
 
 gem 'sentry-rails'
 

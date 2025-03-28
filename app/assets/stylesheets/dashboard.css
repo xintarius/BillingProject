@@ -1,3 +1,4 @@
+/* Dashboard */
 .dashboard {
     background-color: #F5F1E3;
     display: flex;
@@ -19,7 +20,7 @@
 }
 
 .mid-panel {
-    display: flex;
+    display: block;
 }
 
 .main-container {

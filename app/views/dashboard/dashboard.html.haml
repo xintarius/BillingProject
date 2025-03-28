@@ -1,1 +1,7 @@
 .mid-panel
+  .chart-description
+    Twoje dane przedstawiające liczbę faktur oraz ich łączną wartość w ostatnim tygodniu
+  .chart-container
+    %canvas{ data: { chart_data: @invoice_data.to_json}, id: 'invoice-chart'}
+
+= javascript_include_tag "https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.js", 'charts'
