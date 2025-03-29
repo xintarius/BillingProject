@@ -1,3 +1,4 @@
+/* Dashboard */
 .dashboard {
     background-color: #F5F1E3;
     display: flex;
@@ -19,7 +20,7 @@
 }
 
 .mid-panel {
-    display: flex;
+    display: block;
 }
 
 .main-container {
@@ -67,8 +68,39 @@ a:hover {
     color: black;
 }
 
-.companies-grid-container {
+.companies-grid-container, .invoice-container  {
     display: flex;
     flex-direction: column;
     margin: 2rem 0 0 2rem;
+}
+
+.add-invoices {
+    display: flex;
+    flex-direction: column;
+}
+
+.button {
+    margin-top: 2rem;
+}
+
+.flash {
+    padding: 0.5rem;
+    text-align: center;
+    align-items: center;
+}
+
+.notice {
+    background: green;
+}
+
+.error {
+    background: red;
+}
+
+.settlements {
+    display: flex;
+}
+
+.invoice-status {
+    display: contents;
 }

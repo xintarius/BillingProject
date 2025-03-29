@@ -20,10 +20,8 @@ namespace :raw_data do
 
 
   task delete_invalid_data: :environment do
-    vat = 23
-    companies = Company.where.not(vat: vat)
-
-
+    companies = Company.where.not(vat: 23)
+    Rails.debugger.info "#{companies.count} companies deleted"
     companies.delete_all
   end
 end

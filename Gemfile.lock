@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    Ascii85 (2.0.1)
     actioncable (8.0.1)
       actionpack (= 8.0.1)
       activesupport (= 8.0.1)
@@ -74,7 +75,25 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    afm (0.2.2)
     ast (2.4.2)
+    aws-eventstream (1.3.1)
+    aws-partitions (1.1059.0)
+    aws-sdk-core (3.219.0)
+      aws-eventstream (~> 1, >= 1.3.0)
+      aws-partitions (~> 1, >= 1.992.0)
+      aws-sigv4 (~> 1.9)
+      base64
+      jmespath (~> 1, >= 1.6.1)
+    aws-sdk-kms (1.99.0)
+      aws-sdk-core (~> 3, >= 3.216.0)
+      aws-sigv4 (~> 1.5)
+    aws-sdk-s3 (1.182.0)
+      aws-sdk-core (~> 3, >= 3.216.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.5)
+    aws-sigv4 (1.11.0)
+      aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.2.0)
     bcrypt (3.1.20)
     benchmark (0.4.0)
@@ -92,8 +111,10 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    chronic (0.10.2)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.0)
+    content_disposition (1.0.0)
     crass (1.0.6)
     csv (3.3.2)
     datagrid (2.0.1)
@@ -108,15 +129,26 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    diff-lcs (1.5.1)
     dotenv (3.1.7)
     dotenv-rails (3.1.7)
       dotenv (= 3.1.7)
       railties (>= 6.1)
+    down (5.4.2)
+      addressable (~> 2.8)
     drb (2.2.1)
     erubi (1.13.1)
     erubis (2.7.0)
+    ffi (1.17.1-aarch64-linux-gnu)
+    ffi (1.17.1-aarch64-linux-musl)
+    ffi (1.17.1-arm-linux-gnu)
+    ffi (1.17.1-arm-linux-musl)
+    ffi (1.17.1-x86_64-linux-gnu)
+    ffi (1.17.1-x86_64-linux-musl)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    groupdate (6.5.1)
+      activesupport (>= 7)
     haml (6.3.0)
       temple (>= 0.8.2)
       thor
@@ -126,6 +158,7 @@ GEM
       activesupport (>= 5.1)
       haml (>= 4.0.6)
       railties (>= 5.1)
+    hashery (2.1.2)
     html2haml (2.3.0)
       erubis (~> 2.7.0)
       haml (>= 4.0)
@@ -148,7 +181,20 @@ GEM
     jbuilder (2.13.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jmespath (1.6.2)
     json (2.10.1)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     language_server-protocol (3.17.0.4)
     logger (1.6.5)
     loofah (2.24.0)
@@ -161,6 +207,9 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
+    mini_magick (5.2.0)
+      benchmark
+      logger
     mini_mime (1.1.5)
     minitest (5.25.4)
     msgpack (1.8.0)
@@ -191,15 +240,16 @@ GEM
     parser (3.3.7.1)
       ast (~> 2.4.1)
       racc
+    pdf-reader (2.14.1)
+      Ascii85 (>= 1.0, < 3.0, != 2.0.0)
+      afm (~> 0.2.1)
+      hashery (~> 2.0)
+      ruby-rc4
+      ttfunk
     pg (1.5.9)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
-    propshaft (1.1.0)
-      actionpack (>= 7.0.0)
-      activesupport (>= 7.0.0)
-      rack
-      railties (>= 7.0.0)
     psych (5.2.3)
       date
       stringio
@@ -248,6 +298,8 @@ GEM
     rake (13.2.1)
     rdoc (6.12.0)
       psych (>= 4.0.0)
+    redis-client (0.24.0)
+      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
@@ -255,6 +307,24 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.4.0)
+    rspec-core (3.13.3)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-rails (7.1.1)
+      actionpack (>= 7.0)
+      activesupport (>= 7.0)
+      railties (>= 7.0)
+      rspec-core (~> 3.13)
+      rspec-expectations (~> 3.13)
+      rspec-mocks (~> 3.13)
+      rspec-support (~> 3.13)
+    rspec-support (3.13.2)
+    rtesseract (3.1.3)
     rubocop (1.71.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -273,6 +343,10 @@ GEM
       rubocop (>= 1.52.0, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
+    ruby-rc4 (0.1.5)
+    ruby-vips (2.2.3)
+      ffi (~> 1.12)
+      logger
     ruby_parser (3.21.1)
       racc (~> 1.5)
       sexp_processor (~> 4.16)
@@ -291,6 +365,22 @@ GEM
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
     sexp_processor (4.17.3)
+    shrine (3.6.0)
+      content_disposition (~> 1.0)
+      down (~> 5.1)
+    sidekiq (8.0.1)
+      connection_pool (>= 2.5.0)
+      json (>= 2.9.0)
+      logger (>= 1.6.2)
+      rack (>= 3.1.0)
+      redis-client (>= 0.23.2)
+    sprockets (4.2.1)
+      concurrent-ruby (~> 1.0)
+      rack (>= 2.2.4, < 4)
+    sprockets-rails (3.5.2)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      sprockets (>= 3.0.0)
     sqlite3 (2.5.0-aarch64-linux-gnu)
     sqlite3 (2.5.0-aarch64-linux-musl)
     sqlite3 (2.5.0-arm-linux-gnu)
@@ -304,6 +394,8 @@ GEM
     thor (1.3.2)
     tilt (2.6.0)
     timeout (0.4.3)
+    ttfunk (1.8.0)
+      bigdecimal (~> 3.1)
     turbo-rails (2.0.11)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
@@ -326,6 +418,8 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    whenever (1.0.0)
+      chronic (>= 0.6.3)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.7.1)
@@ -341,6 +435,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  aws-sdk-s3
   bootsnap
   capybara
   csv
@@ -348,24 +443,34 @@ DEPENDENCIES
   debug
   devise
   dotenv-rails
+  groupdate
   haml
   haml-rails
   html2haml
   importmap-rails
   inline_svg
   jbuilder
+  kaminari
+  mini_magick
+  pdf-reader
   pg
-  propshaft
   puma (>= 5.0)
   rails (~> 8.0.1)
+  rspec-rails
+  rtesseract
   rubocop-rails
+  ruby-vips
   selenium-webdriver
   sentry-rails
+  shrine
+  sidekiq (~> 8.0)
+  sprockets-rails
   sqlite3 (>= 2.1)
   stimulus-rails
   turbo-rails
   tzinfo-data
   web-console
+  whenever
 
 BUNDLED WITH
    2.6.2

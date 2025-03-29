@@ -1,2 +1,3 @@
-.mid-panel
-  rozliczenia
+.settlements-container
+  = datagrid_table @settlement_grid, @assets
+  = paginate(@assets)

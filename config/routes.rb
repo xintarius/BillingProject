@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   devise_for :users
 
   get 'dashboard', to: 'dashboard#dashboard'
-  get 'invoice', to: 'invoice#index'
+
+  resources :invoice, only: [:index, :new, :create]
+
   get 'settlement', to: 'settlement#index'
   get 'users/sign_out', to: 'landing#index'
   get 'users/index', to: 'users#index'

@@ -1,0 +1,4 @@
+.invoice-container
+  = datagrid_table @invoices_grid, @assets
+  = paginate(@assets)
+= button_to 'Nowa Faktura', new_invoice_path, method: 'get'
