@@ -28,16 +28,16 @@ class MinioClient
     obj = connection.bucket(bucket_name).object(file_key)
 
     unless obj.exists?
-      puts "🚨 Plik #{file_key} nie istnieje w Minio (bucket: #{bucket_name})"
+      Rails.debugger.info "🚨 File #{file_key} not fount in Minio (bucket: #{bucket_name})"
       return nil
     end
 
     begin
       content = obj.get.body.read
-      puts "✅ Plik pobrany: #{file_key}, rozmiar: #{content.size} bajtów"
+      Rails.debugger.info "File download: #{file_key}, size: #{content.size}"
       content
     rescue StandardError => e
-      puts "❌ Błąd pobierania pliku #{file_key}: #{e.message}"
+      Rails.debugger.info "Download error #{file_key}: #{e.message}"
       nil
     end
   end

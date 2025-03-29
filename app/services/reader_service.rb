@@ -36,7 +36,7 @@ class ReaderService
     invoice = Invoice.where(file_path: file_key)
     read_text(invoice, temp_path, errors)
   rescue StandardError => e
-    puts "OCR image error: #{e.message}"
+    Rails.debugger.info "OCR image error: #{e.message}"
   end
 
   def self.extract_text_from_pdf(file_path)
@@ -82,17 +82,17 @@ class ReaderService
     date_match = cleaned_text.match(/Data: (\d{4}-\d{2}-\d{2})/)&.captures&.first
     return unless date_match && date_match != invoices.date.to_s
 
-    errors << "Data nie zgadza się:'#{date_match}', Baza '#{invoices.date}'"
+    errors << "Date error:'#{date_match}', Base: '#{invoices.date}'"
   end
 
   def self.check_errors(invoices, errors)
     if errors.empty?
       invoices.update(invoice_status: 'success', description_error: nil)
-      puts 'All data is checked'
+      Rails.debugger.info 'All data is checked'
     else
       invoices.update(invoice_status: 'failed', description_error: errors)
-      puts 'Found errors:'
-      errors.each { |e| puts " - #{e}" }
+      Rails.debugger.info 'Found errors:'
+      errors.each { |e| Rails.debugger.info " - #{e}" }
     end
   end
 
@@ -110,7 +110,7 @@ class ReaderService
 
       regex_data(invoices, cleaned_text, errors)
       check_errors(invoices, errors)
-      puts "🔍 OCR Result: #{text.strip}"
+      Rails.debugger.info "🔍 OCR Result: #{text.strip}"
     end
   end
 

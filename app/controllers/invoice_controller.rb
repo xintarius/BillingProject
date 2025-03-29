@@ -21,7 +21,7 @@ class InvoiceController < ApplicationController
     flash[:notice] = 'Faktura została utworzona'
     redirect_to invoice_index_path
   rescue ActiveRecord::RecordInvalid => e
-    puts e.message.inspect
+    Rails.debugger.info e.message.inspect
     flash[:error] = "Błąd przy tworzeniu faktury #{e.message}"
     redirect_to new_invoice_path
   end

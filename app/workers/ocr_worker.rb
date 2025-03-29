@@ -3,7 +3,7 @@ class OcrWorker
   include Sidekiq::Worker
   sidekiq_options queue: :default, retry: 3
   def perform(file_key)
-    puts "📥 Download file: #{file_key}"
+    Rails.debugger.info "📥 Download file: #{file_key}"
 
     file_content = MinioClient.get_object(file_key)
 
@@ -19,12 +19,11 @@ class OcrWorker
       tempfile.binmode
       tempfile.write(file_content)
       tempfile.rewind
-      puts "ten key #{file_key.inspect}"
       ReaderService.extract_text_from_image(tempfile.path, file_key)
       tempfile.close
       tempfile.unlink
     end
   rescue StandardError => e
-    puts "Ocr error for #{file_key}: #{e.message}"
+    Rails.debugger.info "Ocr error for #{file_key}: #{e.message}"
   end
 end
