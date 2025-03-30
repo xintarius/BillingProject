@@ -1,0 +1,9 @@
+.mid-panel
+  = form_for @role, url: roles_path, method: :post do |f|
+    = f.label 'nazwa roli'
+    = f.text_field :name
+    = f.label 'kod'
+    = f.text_field :code
+    = f.label 'opis'
+    = f.text_area :description
+    = f.submit 'Dodaj'
