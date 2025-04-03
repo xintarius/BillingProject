@@ -1,4 +1,6 @@
 .mid-panel
-  = button_to "Nowy użytkownik", users_path
-  = datagrid_table @user_grid, @assets
-  = paginate(@assets)
+  .user-container
+    = button_to "Nowy użytkownik", users_path, class: 'button'
+    .datagrid-container
+      = datagrid_table @user_grid, @assets, html: { class: 'table user-grid'}
+      = paginate(@assets)

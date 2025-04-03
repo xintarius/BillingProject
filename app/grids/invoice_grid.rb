@@ -29,7 +29,7 @@ class InvoiceGrid
     record.created_at.strftime('%Y-%m-%d %H:%M')
   end
 
-  column(:invoice_status, order: false, class: 'invoice-status') do |record|
+  column(:invoice_status, order: false) do |record|
     ApplicationController.helpers.status_icon(record.invoice_status)
   end
 end

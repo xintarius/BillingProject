@@ -1,8 +1,9 @@
 .top-panel
   .settings-container
     = icon 'notifications'
-    = icon 'settings'
-    = link_to 'Użytkownicy', users_index_path
-    = link_to 'Role', roles_path
-    = button_to 'Wyloguj', destroy_user_session_path, method: :delete, class: 'no-btn'
-    -# .settings= link_to settings_path
+    .dropdown
+      = icon 'settings', id: 'settings-icon'
+      .dropdown-content
+        = link_to 'Użytkownicy', users_index_path
+        = link_to 'Role', roles_path
+        = link_to ' Wyloguj', destroy_user_session_path, method: :delete, class: 'no-btn'

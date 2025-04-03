@@ -1,4 +1,7 @@
 /* Dashboard */
+
+$first-color: rgb(33, 33, 33);
+
 .dashboard {
     background-color: #F5F1E3;
     display: flex;
@@ -9,13 +12,13 @@
 .left-panel {
     width: 20%;
     display: block;
-    background: rgba(223, 95, 22, 0.4);
+    background: rgba($first-color, 0.9);
     height: inherit;
 }
 
 .top-panel {
     display: block;
-    background: rgba(254, 150, 56, 0.4);
+    background: $first-color;
     height: 6rem;
 }
 
@@ -35,6 +38,7 @@
     justify-content: flex-end;
     padding: 0.5rem;
     gap: 1rem;
+    margin-right: 1rem;
 }
 
 .no-btn {
@@ -56,22 +60,33 @@
 
 .menu {
     border-bottom: #F5F1E3 1px solid;
+    color: #FFFFFF;
+    font-weight: bold;
 }
 
-a {
+.left-panel a {
     text-decoration: none;
-    color: black;
+    color: #FFFFFF !important;
+}
+
+.dropdown-content {
+    a {
+        color: black !important;
+    }
+
+    a:hover {
+        color: black !important;
+    }
 }
 
 a:hover {
     text-decoration: none;
-    color: black;
+    color: white !important;
 }
 
 .companies-grid-container, .invoice-container  {
     display: flex;
     flex-direction: column;
-    margin: 2rem 0 0 2rem;
 }
 
 .add-invoices {
@@ -101,6 +116,49 @@ a:hover {
     display: flex;
 }
 
-.invoice-status {
-    display: contents;
+.user-container .user-grid, .role-container .role-grid, .invoice-grid {
+    margin-top: 2rem;
+}
+
+.user-container, .role-container, .company-container, .settlement-container, .invoice-container {
+    padding: 2rem;
+}
+
+.invoice-grid tbody {
+    vertical-align: baseline;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 10rem;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1;
+    right: 0;
+}
+
+.dropdown-content a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    padding: 8px;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.settings-icon {
+    cursor: pointer;
+}
+
+.pagination {
+    color: black !important;
 }
