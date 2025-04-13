@@ -1,22 +1,16 @@
 name: Deploy to Oracle VM
 
 on:
+  push:
+    branches:
+      - develop
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch to deploy'
-        required: true
-        default: 'develop'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Echo input
-        run:
-          echo "Branch to deploy: ${{ github.event.inputs.branch }}"
-
       - name: Checkout code
         uses: actions/checkout@v3
 

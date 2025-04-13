@@ -1,3 +1,7 @@
-every 1.day, at: '00:00 pm' do
+every 1.day, at: '23:59' do
   runner 'daily_invoice.create_daily_invoices'
+end
+
+every 1.hour do
+  runner 'invoices:check_invoices_status'
 end
