@@ -21,6 +21,14 @@ namespace :invoices do
     invoices.delete_all
   end
 
+  desc 'remove old pdfs from storage'
+  task delete_pdfs_from_storage: :environment do
+    files = MinioClient.list_client_files
+    invoices = Invoice.where(file_path: nil).pluck(:file_path)
+    invoices_to_delete = invoices - files
+    MinioClient.delete_file(invoices_to_delete) if invoices_to_delete.any?
+  end
+
   def equal_data(files)
     data_from_minio = MinioClient.list_files('uploads/')
     result = files & data_from_minio
@@ -34,7 +42,7 @@ namespace :invoices do
   end
 
   def download_from_minio(file_key)
-    s3_client = MinioClient.connection
+    s3_client = MinioClient.client
     obj = s3_client.bucket(ENV.fetch('DEFAULT_BUCKET', nil)).object(file_key)
     local_path = File.join('tmp', File.basename(file_key))
     FileUtils.mkdir_p('tmp') unless File.directory?('tmp')

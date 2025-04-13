@@ -13,9 +13,14 @@ class InvoiceController < ApplicationController
 
   def create
     file = params[:invoice][:file]
+    brutto = params[:invoice][:brutto].to_s.gsub(',', '.').to_f * 100
+    netto = params[:invoice][:netto].to_s.gsub(',', '.').to_f * 100
     regex_nip = params[:invoice][:nip].gsub(/[-\s]/, '')
     company_id = Company.find_or_create_by!(nip: regex_nip)
-    invoice_params = strong_params.to_h.merge(company_id: company_id.id, invoice_type_id: 1)
+    invoice_params = strong_params.to_h.merge(company_id: company_id.id,
+                                              invoice_type_id: 1,
+                                              brutto: brutto,
+                                              netto: netto)
     Invoice.create!(invoice_params)
     ReaderService.send_file(file, company_id)
     flash[:notice] = 'Faktura została utworzona'

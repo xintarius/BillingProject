@@ -1,16 +1,22 @@
 name: Deploy to Oracle VM
 
 on:
-  push:
-    branches:
-      - develop
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'develop'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Echo input
+        run:
+          echo "Branch to deploy: ${{ github.event.inputs.branch }}"
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -24,8 +30,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.ORACLE_HOST }} << 'EOF'
             cd BillingProject || git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/xintarius/BillingProject.git billingproject && cd billingproject
             git pull origin develop
-            docker stop billingproject || true
-            docker rm billingproject || true
+            docker stop $(docker ps -q --filter "ancestor=billingproject") || true
+            docker rm $(docker ps -a -q --filter "ancestor=billingproject") || true
             docker build -t billingproject .
             docker run -d --env-file .env -p 3000:3000 -e RAILS_MASTER_KEY=${{ secrets.SECRET_KEY_BASE }} billingproject
           EOF

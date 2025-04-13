@@ -14,7 +14,7 @@ class InvoiceGrid
   end
 
   column :brutto, header: 'Brutto' do |record|
-    "#{record.brutto} zł"
+    "#{(record.brutto.to_f / 100)} zł"
   end
 
   column :vat, header: 'Vat' do |record|
@@ -22,7 +22,7 @@ class InvoiceGrid
   end
 
   column :netto, header: 'Netto' do |record|
-    "#{record.netto} zł"
+    "#{(record.netto.to_f / 100)} zł"
   end
 
   column :created_at do |record|

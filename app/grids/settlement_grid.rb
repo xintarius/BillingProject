@@ -10,11 +10,11 @@ class SettlementGrid
   end
 
   column(:brutto, header: 'Brutto', order: false) do |record|
-    "#{record.brutto_sum.to_i} zł"
+    "#{record.brutto_sum.to_f / 100} zł"
   end
 
   column(:netto, header: 'Netto', order: false) do |record|
-    "#{record.netto_sum.to_i} zł"
+    "#{record.netto_sum.to_f / 100} zł"
   end
 
   column(:okres, header: 'Okres rozliczeniowy') do |record|

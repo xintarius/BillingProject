@@ -18,7 +18,7 @@ on:
       - master
 
 jobs:
-  development:
+  build-development:
     runs-on: ubuntu-latest
 
     env:
