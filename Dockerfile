@@ -4,11 +4,11 @@ ARG RAILS_ENV
 ENV RAILS_ENV="${RAILS_ENV:-development}"
 ENV BUNDLE_PATH="/usr/local/bundle"
 
-WORKDIR /rails
+WORKDIR /app
 
-# Install dependencies
+# Install system dependencies in one layer
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
+  apt-get install --no-install-recommends -y \
     build-essential \
     git \
     pkg-config \
@@ -18,29 +18,37 @@ RUN apt-get update -qq && \
     gnupg \
     cron \
     nano \
-    tzdata && \
-    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs && \
-    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+tzdata \
+    netcat-openbsd \
+    tesseract-ocr \
+    tesseract-ocr-pol && \
+  curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+  apt-get install -y nodejs && \
+  rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-# Install gems
+# Prepare app directories
+RUN mkdir -p tmp/cache tmp/pids tmp/sockets && \
+  chmod -R 777 tmp
+
+# Copy Gemfile and install gems early (for cache)
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler && bundle install --jobs 4 --retry 3
 
-# Copy app
+# Copy the rest of the app
 COPY . .
 
-# Update crontab from whenever
-RUN bundle exec whenever --update-crontab || true
-
-# Copy and set entrypoint
-COPY entrypoint.sh /usr/bin/entrypoint.sh
-RUN chmod +x /usr/bin/entrypoint.sh
-
-# Create app user
+# Fix permissions
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    chown -R rails:rails .
+    chown -R rails:rails . && \
+    chmod 777 /var/run
+
+# Setup cron from whenever
+RUN bundle exec whenever --update-crontab || true
+
+# Add entrypoint
+COPY entrypoint.sh /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/entrypoint.sh
 
 USER rails
 

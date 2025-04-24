@@ -1,6 +1,7 @@
 require 'rtesseract'
 require 'fileutils'
 require 'mini_magick'
+require_relative '../helpers/connection_helper'
 namespace :invoices do
 
   desc 'Check invoices status'
@@ -37,7 +38,7 @@ namespace :invoices do
 
   def recognize_data(files)
     files.each do |file_key|
-      OcrWorker.perform_async(file_key)
+      ConnectionHelper.safe_push(OcrWorker, file_key)
     end
   end
 

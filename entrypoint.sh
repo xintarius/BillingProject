@@ -1,5 +1,17 @@
-cron
+#!/bin/sh
 
-bundle exec whenever --update-crontab
+set -e
 
-exec bundle exec rails server -b 0.0.0.0
+export PATH="/usr/local/bundle/bin:/usr/local/bin:$PATH"
+
+mkdir -p tmp log
+chmod -R 777 tmp log
+
+if [ "$RUN_CRON" = "true" ]; then
+  echo "[scheduler] Updating crontab with whenever..."
+  bundle exec whenever --update-crontab
+  echo "[scheduler] Starting cron..."
+  exec cron -f
+fi
+
+exec "$@"

@@ -24,8 +24,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.ORACLE_HOST }} << 'EOF'
             cd BillingProject || git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/xintarius/BillingProject.git billingproject && cd billingproject
             git pull origin develop
-            docker stop $(docker ps -q --filter "ancestor=billingproject") || true
-            docker rm $(docker ps -a -q --filter "ancestor=billingproject") || true
-            docker build -t billingproject .
-            docker run -d --env-file .env -p 3000:3000 -e RAILS_MASTER_KEY=${{ secrets.SECRET_KEY_BASE }} billingproject
+            
+            docker-compose down --remove-orphans
+            docker-compose build
+            docker-compose up -d
           EOF
