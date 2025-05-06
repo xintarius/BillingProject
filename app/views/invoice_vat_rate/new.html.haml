@@ -1,0 +1,6 @@
+= form_with model: @invoice_vat_type, url: invoice_vat_rate_index_path, method: :post do |f|
+  = f.label 'stawka vat'
+  = f.text_field :vat_rate
+  = f.label 'komentarz'
+  = f.text_field :comment
+  = f.submit 'Dodaj'

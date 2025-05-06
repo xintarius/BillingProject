@@ -8,4 +8,8 @@ class User < ApplicationRecord
   validates :email, presence: true
   validates :password, presence: true
   belongs_to :role
+
+  def admin?
+    role&.code == 'ADM'
+  end
 end

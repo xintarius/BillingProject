@@ -1,6 +1,7 @@
 # users controller
 class UsersController < ApplicationController
   layout 'dashboard_layout'
+  before_action :require_admin
   def index
     @user_grid = UserGrid.new(params[:user_grid])
     @assets = @user_grid.assets.page(params[:page]).per(10)

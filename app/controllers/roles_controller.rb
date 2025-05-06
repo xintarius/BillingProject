@@ -1,6 +1,7 @@
 # roles_controller
 class RolesController < ApplicationController
   layout 'dashboard_layout'
+  before_action :require_admin
   def index
     @roles_grid = RoleGrid.new(params[:role_grid])
     @assets = @roles_grid.assets.page(params[:page]).per(10)
