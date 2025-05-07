@@ -1,6 +1,6 @@
 namespace :daily_invoice do
   desc 'create daily invoices'
-  task create_daily_invoice: :environment do
+  task create_daily_invoices: :environment do
     Rails.debugger.info 'Start searching for invoices...'
     start_day = Time.zone.now.beginning_of_day - 1.day
     end_day = Time.zone.now.end_of_day - 1.day
