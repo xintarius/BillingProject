@@ -11,7 +11,8 @@ if [ "$RUN_CRON" = "true" ]; then
   echo "[scheduler] Updating crontab with whenever..."
   bundle exec whenever --update-crontab
   echo "[scheduler] Starting cron..."
-  exec cron -f
+  rm -f /var/run/crond.pid
+  cron -f
 fi
 
 exec "$@"

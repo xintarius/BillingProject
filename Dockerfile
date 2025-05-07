@@ -4,7 +4,7 @@ ARG RAILS_ENV
 ENV RAILS_ENV="${RAILS_ENV:-development}"
 ENV BUNDLE_PATH="/usr/local/bundle"
 
-WORKDIR /app
+WORKDIR /rails
 
 # Install system dependencies in one layer
 RUN apt-get update -qq && \

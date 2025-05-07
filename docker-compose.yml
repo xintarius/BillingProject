@@ -49,6 +49,7 @@ services:
     networks:
       - my_network
     user: root
+    command: ['cron', '-f']
 
   redis:
     image: redis:7
