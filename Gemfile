@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 gem 'rails', '~> 8.0.1'
 
 gem 'aws-sdk-s3'
+gem 'bootstrap'
+gem 'dartsass-rails'
 gem 'datagrid'
 gem 'devise'
 gem 'groupdate'
@@ -74,3 +76,5 @@ group :test do
 end
 
 gem 'sidekiq', '~> 8.0'
+
+gem "sassc", "~> 2.4"

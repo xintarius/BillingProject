@@ -11,4 +11,5 @@ development:
   host: <%= ENV["DATABASE_HOST"] %>
   options: <%#= ENV["DATABASE_OPTION"] %>
   port: 5432
+  sslmode: require
   schema_search_path: public

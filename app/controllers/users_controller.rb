@@ -1,8 +1,10 @@
 # users controller
 class UsersController < ApplicationController
   layout 'dashboard_layout'
+  before_action :require_admin
   def index
-    @users = User.all
+    @user_grid = UserGrid.new(params[:user_grid])
+    @assets = @user_grid.assets.page(params[:page]).per(10)
   end
 
   def new
@@ -21,6 +23,6 @@ class UsersController < ApplicationController
   private
 
   def strong_params
-    params.expect(user: %i[email password]) if params[:user].present?
+    params.expect(user: %i[email password role_id]) if params[:user].present?
   end
 end

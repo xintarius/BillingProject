@@ -1,7 +1,15 @@
 .top-panel
   .settings-container
     = icon 'notifications'
-    = icon 'settings'
-    = link_to "Użytkownicy", users_index_path
-    = button_to "Wyloguj", destroy_user_session_path, method: :delete, class: 'no-btn'
-    -# .settings= link_to settings_path
+    .dropdown
+      = icon 'settings', id: 'settings-icon'
+      .dropdown-content
+        - if current_user.admin?
+          = link_to 'Użytkownicy', users_index_path
+          = link_to 'Role', roles_path
+        = link_to ' Wyloguj', destroy_user_session_path, method: :delete, class: 'no-btn'
+
+  - if current_user.admin?
+    .admin-panel-container
+      .invoice-vat-container
+        = link_to 'Stawki Vat', invoice_vat_rate_index_path

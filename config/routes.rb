@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   get 'users/sign_out', to: 'landing#index'
   get 'users/index', to: 'users#index'
   get 'company_properties', to: 'company_properties#index'
+
+  resources :invoice_vat_rate, only: [:create, :new, :index]
+  resources :roles, only: [:create, :new, :index]
   resources :users, only: [:create, :new]
   get "up" => "rails/health#show", as: :rails_health_check
 end

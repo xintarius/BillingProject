@@ -36,7 +36,7 @@ class ReaderService
     invoice = Invoice.where(file_path: file_key)
     read_text(invoice, temp_path, errors)
   rescue StandardError => e
-    Rails.debugger.info "OCR image error: #{e.message}"
+    puts "OCR image error: #{e.message}"
   end
 
   def self.extract_text_from_pdf(file_path)
@@ -88,11 +88,11 @@ class ReaderService
   def self.check_errors(invoices, errors)
     if errors.empty?
       invoices.update(invoice_status: 'success', description_error: nil)
-      Rails.debugger.info 'All data is checked'
+      puts 'All data is checked'
     else
       invoices.update(invoice_status: 'failed', description_error: errors)
-      Rails.debugger.info 'Found errors:'
-      errors.each { |e| Rails.debugger.info " - #{e}" }
+      puts 'Found errors:'
+      errors.each { |e| puts " - #{e}" }
     end
   end
 
@@ -110,7 +110,7 @@ class ReaderService
 
       regex_data(invoices, cleaned_text, errors)
       check_errors(invoices, errors)
-      Rails.debugger.info "🔍 OCR Result: #{text.strip}"
+      puts "🔍 OCR Result: #{text.strip}"
     end
   end
 

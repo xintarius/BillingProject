@@ -14,22 +14,22 @@ class InvoiceGrid
   end
 
   column :brutto, header: 'Brutto' do |record|
-    "#{record.brutto} zł"
+    "#{record.brutto.to_f / 100} zł"
   end
 
-  column :vat, header: 'Vat' do |record|
-    "#{record.vat}%"
+  column :invoice_vat_rate_id, header: 'Vat' do |record|
+    "#{record.invoice_vat_rate&.vat_rate.to_i}%"
   end
 
   column :netto, header: 'Netto' do |record|
-    "#{record.netto} zł"
+    "#{record.netto.to_f / 100} zł"
   end
 
   column :created_at do |record|
     record.created_at.strftime('%Y-%m-%d %H:%M')
   end
 
-  column(:invoice_status, order: false, class: 'invoice-status') do |record|
+  column(:invoice_status, order: false) do |record|
     ApplicationController.helpers.status_icon(record.invoice_status)
   end
 end

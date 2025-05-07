@@ -1,0 +1,96 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+$main-color: #483D8B;
+$secondary-color: #191919;
+$accent-color: #191970;
+$gray-color: #2F4F4F;
+
+$primary: $main-color;
+$secondary: $secondary-color;
+$info: $accent-color;
+
+@import "bootstrap";
+@import "dashboard";
+@import "charts";
+
+.button {
+    color: white;
+    background: $primary;
+    border: 1px solid $primary;
+    border-radius: 8px;
+    &:hover {
+        color: $primary;
+        background: white;
+    }
+}
+
+.datagrid-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+th {
+    vertical-align: baseline;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.welcome-section {
+    color: #FFFFFF;
+    text-align: center;
+    margin-top: 8rem;
+}
+
+body {
+    background: #2c3034;
+}
+
+.log-section {
+    position: absolute;
+    left: 45%;
+    top: 25%;
+    color: #FFFFFF;
+}
+
+.registration-section {
+    position: absolute;
+    left: 45%;
+    top: 25%;
+}
+
+main {
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.before-login-container {
+    background: #2c3034;
+}
+
+input {
+    height: 2.5rem;
+}
+
+select {
+    border-radius: 10px;
+    border: #000000 2px solid;
+}

@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+    volumes:
+      - ".:/rails"
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      REDIS_URL: "redis://redis:6379/0"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    networks:
+      - my_network
+    user: root
+
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - ".:/rails"
+    environment:
+      RAILS_ENV: development
+      REDIS_URL: "redis://redis:6379/0"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    networks:
+      - my_network
+    user: root
+
+  scheduler:
+    build: .
+    volumes:
+      - ".:/rails"
+    environment:
+      RAILS_ENV: development
+      RUN_CRON: "true"
+      REDIS_URL: "redis://redis:6379/0"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    networks:
+      - my_network
+    user: root
+    command: ['cron', '-f']
+
+  redis:
+    image: redis:7
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
+

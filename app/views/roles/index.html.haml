@@ -1,0 +1,6 @@
+.mid-panel
+  .role-container
+    = button_to 'Nowa rola', new_role_path, method: :get, class: 'button'
+    .datagrid-container
+      = datagrid_table @roles_grid, @assets, html: { class: 'table role-grid'}
+      = paginate(@assets)
