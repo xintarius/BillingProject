@@ -1,0 +1,16 @@
+.mid-panel
+  .data-settings-container
+    %h3 Moje Dane
+    .personal-data-container
+      .nip-container
+        .nip-data Nip:
+        %div=@nip.nip
+      .username-container
+        .username-data Email:
+        %div=@username
+      .created-container
+        .user-created Dołączono:
+        %div=@user_created
+      .updated-container
+        .user-updated Zmodyfikowano:
+        %div=@user_updated

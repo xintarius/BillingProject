@@ -90,7 +90,7 @@ class ReaderService
       invoices.update(invoice_status: 'success', description_error: nil)
       puts 'All data is checked'
     else
-      invoices.update(invoice_status: 'failed', description_error: errors)
+      invoices.update(invoice_status: 'failed', description_error: errors.to_json)
       puts 'Found errors:'
       errors.each { |e| puts " - #{e}" }
     end

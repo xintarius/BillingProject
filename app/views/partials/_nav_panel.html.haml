@@ -1,5 +1,6 @@
 .top-panel
   .settings-container
+    .user-email Zalogowany: #{current_user.email}
     = icon 'notifications'
     .dropdown
       = icon 'settings', id: 'settings-icon'
@@ -7,9 +8,12 @@
         - if current_user.admin?
           = link_to 'Użytkownicy', users_index_path
           = link_to 'Role', roles_path
+          = link_to 'Ustawienia', settings_path
         = link_to ' Wyloguj', destroy_user_session_path, method: :delete, class: 'no-btn'
 
   - if current_user.admin?
     .admin-panel-container
       .invoice-vat-container
         = link_to 'Stawki Vat', invoice_vat_rate_index_path
+      .invoice-type-container
+        = link_to 'Typy Faktur', invoice_type_index_path

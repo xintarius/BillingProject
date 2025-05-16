@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_02_102630) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_08_090759) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_102630) do
     t.string "nip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "member_id"
   end
 
   create_table "daily_invoices", id: :bigint, default: -> { "nextval('daily_invoice_id_seq'::regclass)" }, force: :cascade do |t|
@@ -39,6 +40,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_102630) do
     t.integer "netto_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "exports", force: :cascade do |t|
+    t.string "export_name"
+    t.string "subject"
+    t.text "params"
+    t.string "error_messages"
+    t.text "read_data"
+    t.string "export_type"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_exports_on_user_id"
   end
 
   create_table "invoice_types", force: :cascade do |t|
@@ -70,6 +84,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_102630) do
     t.string "invoice_status", default: "initial"
     t.string "description_error"
     t.integer "invoice_vat_rate_id"
+    t.integer "user_id"
     t.index ["company_id"], name: "index_invoices_on_company_id"
     t.index ["invoice_type_id"], name: "index_invoices_on_invoice_types_id"
   end
@@ -82,6 +97,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_102630) do
     t.datetime "updated_at", null: false
     t.index ["addresses_id"], name: "index_locations_on_addresses_id"
     t.index ["company_id"], name: "index_locations_on_company_id"
+  end
+
+  create_table "members", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "company_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_members_on_company_id"
+    t.index ["user_id"], name: "index_members_on_user_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -105,6 +129,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_102630) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "exports", "users"
   add_foreign_key "locations", "addresses", column: "addresses_id"
   add_foreign_key "locations", "companies"
+  add_foreign_key "members", "companies"
+  add_foreign_key "members", "users"
 end

@@ -1,6 +1,7 @@
 # company model
 class Company < ApplicationRecord
   has_many :invoices, dependent: :destroy
+  has_many :users, through: :members
   before_save :normalize_nip
 
   private

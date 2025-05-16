@@ -1,0 +1,11 @@
+.mid-panel
+  .personal-document-container
+    %h3 Statystki dokumentu
+    .invoice-statistics-container
+      - if current_user.admin?
+        .invoice-id Id dokumentu: #{@invoice_statistic.id}
+      .invoice-nip NIP: #{@invoice_statistic.company.nip}
+      .invoice-name Name: #{@invoice_statistic.name}
+      .invoice-nr Invoice nr: #{@invoice_statistic.invoice_nr}
+      .invoice-st Invoice Status #{@invoice_statistic.invoice_status}
+      .invoice-description Invoice Description: #{@invoice_errors}

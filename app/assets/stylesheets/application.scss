@@ -46,6 +46,19 @@ html, body {
     padding: 0;
 }
 
+table.datagrid, th:last-child {
+    padding-right: 2rem;
+}
+
+table.datagrid, th {
+    padding: 0.5rem
+}
+
+svg .invoice-status {
+    width: 100px;
+    height: 100px;
+}
+
 .welcome-section {
     color: #FFFFFF;
     text-align: center;

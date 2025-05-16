@@ -15,6 +15,13 @@ namespace :invoices do
     equal_data(invoice)
   end
 
+  desc 'Check and raise initial invoices status'
+  task check_and_raise_invoice_status: :environment do
+    Rails.logger.info 'Start checking invoices with initial status...'
+    invoice = Invoice.where(invoice_status: 'initial')
+    raise "Found #{invoice.count} documents with initial status after check" if invoice.count.positive?
+  end
+
   desc 'delete unused and old invoices'
   task delete_invoices: :environment do
     invoices = Invoice.where(created_at: ..2.days.ago)

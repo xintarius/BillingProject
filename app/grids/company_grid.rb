@@ -3,7 +3,7 @@ class CompanyGrid
   include Datagrid
 
   scope do
-    Company.order(id: :desc)
+    Company.all
   end
 
   column :id, &:id
