@@ -1,0 +1,111 @@
+pl:
+  datagrid:
+    no_results: '――'
+    table:
+      order:
+        asc: "↑"
+        desc: "↓"
+
+  views:
+    layouts:
+      users: Użytkownicy
+      new_user: Nowy Użytkownik
+      roles: Role
+      setting: Ustawienia
+      sign_out: Wyloguj
+      logged_as: 'Zalogowany:'
+      vat_rates: Stawki vat
+      invoice_types: Typy faktur
+      main_page: Strona główna
+      my_invoices: Moje faktury
+      week_settlements: Rozliczenia tygodniowe
+      cooperate_companies: Firmy współpracujące
+      export_data: Eksport danych
+      new_vat_rate: Nowa stawka vat
+      landing:
+        welcome_landing: Witamy na stronie na której pomożemy zająć się twoimi rozliczeniami.
+      dashboard_data:
+        charts-descriptions:
+          invoice_value_and_sum: Twoje dane przedstawiające liczbę faktur oraz ich łączną wartość w ostatnim tygodniu.
+      invoices:
+        new_invoice: Nowa Faktura
+        new:
+          select_file: Wybierz plik
+          nip: Nip
+          name: Nazwa
+          invoice_nr: Numer faktury
+          invoice_date: Data faktury
+          gross: Brutto
+          vat: VAT
+          net: Netto
+          add_invoice: Dodaj fakturę
+        show:
+          document_id: 'Id dokumentu:'
+          nip: 'Nip:'
+          name: 'Nazwa:'
+          invoice_nr: 'Numer faktury:'
+          invoice_status: 'Status faktury:'
+          invoice_description: 'Opis faktury:'
+      settings:
+        data: Moje dane
+        nip: 'Nip:'
+        email: 'Email:'
+        created_at: 'Dołączono:'
+        updated_at: 'Zmodyfikowano:'
+    datagrid:
+      users:
+        id: id
+        email: email
+        created_at: Utworzono
+        updated_at: Zmodyfikowano
+        role: Rola
+        new:
+          email: Email
+          password: Hasło
+          role: Rola
+          add: Dodaj
+      roles:
+        id: Id
+        name: Nazwa
+        code: Kod
+      settlements:
+        gross: Brutto
+        net: Netto
+        billing_period: Okres rozliczeniowy
+      vat_rates:
+        id: Id
+        vat: Vat
+        created_at: Utworzono
+        updated_at: Zmodyfikowano
+      invoices:
+        id: Id
+        invoice_nr: Numer Faktury
+        name: Nazwa
+        invoice_date: Data faktury
+        gross: Brutto
+        vat: VAT
+        net: Netto
+        created_at: Utworzono
+        updated_at: Zmodyfikowano
+        invoice_status: Status faktury
+        invoice_summary: Podsumowanie faktur
+        check_invoice: Sprawdź fakturę
+      invoice_types:
+        id: Id
+        invoice_type: Typ Faktury
+        code: Kod
+        created_at: Utworzono
+        updated_at: Zmodyfikowano
+      companies:
+        id: Id
+        name: Nazwa
+        nip: Nip
+        created_at: Utworzono
+        updated_at: Zmodyfikowano
+      exports:
+        id: Id
+        export_name: Nazwa eksportu
+        subject: Podmiot danych
+        export_type: Typ eksportu
+        user: Użytkownik
+        created_at: Utworzono

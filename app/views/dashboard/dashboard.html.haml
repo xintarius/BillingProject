@@ -1,6 +1,6 @@
 .mid-panel
   .chart-description
-    Twoje dane przedstawiające liczbę faktur oraz ich łączną wartość w ostatnim tygodniu
+    = t('views.layouts.dashboard_data.charts-descriptions.invoice_value_and_sum')
   .chart-container
     %canvas{ data: { chart_data: @invoice_data.to_json}, id: 'invoice-chart'}
 

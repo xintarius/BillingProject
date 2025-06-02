@@ -266,7 +266,7 @@ a:hover {
     display: flex;
 }
 
-.user-email {
+.user-email, .current-user-email {
     color: #FFFFFF;
 }
 
@@ -276,4 +276,17 @@ a:hover {
 
 .invoice-id-text {
     display: flex;
+}
+
+.pl-child, .en-child {
+    color: #FFFFFF;
+}
+
+.pl-child {
+    border-right: #FFFFFF 1px solid;
+    padding-right: 0.3rem;
+}
+
+.en-child {
+    padding-left: 0.3rem;
 }

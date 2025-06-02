@@ -103,6 +103,10 @@ input {
     height: 2.5rem;
 }
 
+input[type=checkbox] {
+    height: auto;
+}
+
 select {
     border-radius: 10px;
     border: #000000 2px solid;

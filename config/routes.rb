@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
+  scope '(:locale)', locale: /en|pl/ do
   root 'landing#index'
   resource :users
   get 'landing', to: 'landing#index'
-  devise_for :users, skip: [:registrations]
+  devise_for :users, skip: [:registrations, :passwords]
 
   get 'dashboard', to: 'dashboard#dashboard'
 
@@ -20,4 +21,5 @@ Rails.application.routes.draw do
   resources :roles, only: [:create, :new, :index]
   resources :users, only: [:create, :new]
   get "up" => "rails/health#show", as: :rails_health_check
+  end
 end

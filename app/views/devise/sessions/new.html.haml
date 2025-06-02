@@ -1,20 +1,21 @@
 .welcome-section
-  %h2 Witamy na stronie na której pomożemy zająć się twoimi rozliczeniami.
+  %h2= t('views.layouts.landing.welcome_landing')
 .log-section
-  %h2 Zaloguj
+  - if user_signed_in?
+    %h2= t('devise.sessions.signed_in')
   = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     .field
-      = f.label :email
+      = f.label :email, t('devise.labels.email')
       %br/
       = f.email_field :email, autofocus: true, autocomplete: "email"
     .field
-      = f.label :password
+      = f.label :password, t('devise.labels.password')
       %br/
       = f.password_field :password, autocomplete: "current-password"
     - if devise_mapping.rememberable?
       .field
         = f.check_box :remember_me
-        = f.label :remember_me
+        = f.label :remember_me, t('devise.actions.remember_me')
     .actions
-      = f.submit "Zaloguj"
+      = f.submit t('devise.actions.sign_in')
   = render "devise/shared/links"
