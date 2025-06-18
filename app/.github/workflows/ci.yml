@@ -15,8 +15,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
