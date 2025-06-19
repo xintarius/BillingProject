@@ -46,6 +46,7 @@ pl:
           invoice_nr: 'Numer faktury:'
           invoice_status: 'Status faktury:'
           invoice_description: 'Opis faktury:'
+          invoice_image_preview: 'Podgląd:'
       settings:
         data: Moje dane
         nip: 'Nip:'

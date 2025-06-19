@@ -44,6 +44,7 @@ en:
           invoice_nr: 'Invoice number:'
           invoice_status: 'Invoice status:'
           invoice_description: 'Invoice description:'
+          invoice_image_preview: 'Image preview:'
       settings:
         data: My data
         nip: 'Nip:'

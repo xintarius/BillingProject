@@ -272,6 +272,10 @@ a:hover {
 
 .invoice-statistics-container {
     display: block;
+    background: #FFFFFF;
+    padding: 1rem;
+    margin: 2rem;
+    border-radius: 10px;
 }
 
 .invoice-id-text {
@@ -289,4 +293,16 @@ a:hover {
 
 .en-child {
     padding-left: 0.3rem;
+}
+
+.invoice-image {
+    max-width: 12.5rem;
+}
+
+.invoice-image-container {
+    padding: 2rem;
+}
+
+.document-statistic-text {
+    text-align: center;
 }

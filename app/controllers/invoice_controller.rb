@@ -12,6 +12,14 @@ class InvoiceController < ApplicationController
 
   def show
     @invoice_statistic = Invoice.find(params[:id])
+    files = MinioClient.list_client_files
+    if files.present?
+      target_file = "#{@invoice_statistic.nip}_#{@invoice_statistic.id}"
+      matched_file = files.find { |file| file.include?(target_file) }
+      @invoice_image = matched_file ? MinioClient.presigned_url(matched_file) : nil
+    else
+      @invoice_image = 'empty'
+    end
     @invoice_errors = convert_description_errors(@invoice_statistic)
   end
 

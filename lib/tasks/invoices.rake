@@ -29,7 +29,7 @@ namespace :invoices do
     invoices.delete_all
   end
 
-  desc 'remove old pdfs from storage'
+  desc 'remove old invoices without data from storage'
   task delete_pdfs_from_storage: :environment do
     files = MinioClient.list_client_files
     invoices = Invoice.where(file_path: nil).pluck(:file_path)

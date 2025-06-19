@@ -60,7 +60,7 @@ class MinioClient
       prefix: prefix
     )
 
-    # Zwracamy listę kluczy (plików)
+    # return key list files
     response.contents.map(&:key)
   end
 
@@ -77,5 +77,10 @@ class MinioClient
     rescue StandardError => e
       puts e.message
     end
+  end
+
+  def self.presigned_url(filename)
+    signer = Aws::S3::Presigner.new(client: @@s3_client)
+    signer.presigned_url(:get_object, bucket: ENV['DEFAULT_BUCKET'], key: filename, expires_in: 3600)
   end
 end
