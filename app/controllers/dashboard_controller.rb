@@ -19,13 +19,12 @@ class DashboardController < ApplicationController
 
     indexed_data = daily_invoice.index_by { |record| record.date.to_s }
     index_data(indexed_data, @invoice_data)
-    @invoice_data
   end
 
   def index_data(indexed_data, invoice_data)
     data_range.each do |date|
       date_str = date.to_s
-      invoice_data[date_str] = indexed_data[date_str]&.brutto.to_i
+      invoice_data[date_str] = indexed_data[date_str]&.brutto.to_f / 100
     end
   end
 

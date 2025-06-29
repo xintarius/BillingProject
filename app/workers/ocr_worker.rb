@@ -12,18 +12,35 @@ class OcrWorker
         tempfile.binmode
         tempfile.write(file_content)
         tempfile.rewind
-        ReaderService.extract_text_from_pdf(tempfile.path)
+        ReaderService.extract_pdf_for_task(tempfile.path)
       end
     else
-      tempfile = Tempfile.new(%w[ocr_input .jpg])
-      tempfile.binmode
-      tempfile.write(file_content)
-      tempfile.rewind
-      ReaderService.extract_text_from_image(tempfile.path, file_key)
-      tempfile.close
-      tempfile.unlink
+      mime = Marcel::MimeType.for(file_content, name: 'input.jpg')
+
+      original = Tempfile.new(['ocr_input', self.class.mime_extension(mime)])
+      original.binmode
+      original.write(file_content)
+      original.rewind
+
+      converted = ReaderService.convert_to_png_if_needed(original)
+
+      ReaderService.extract_image_for_task(converted.path, file_key)
+
+      converted.close
+      converted.unlink
+      original.close
+      original.unlink
     end
   rescue StandardError => e
     puts "Ocr error for #{file_key}: #{e.message}"
+  end
+
+  def self.mime_extension(mime)
+    case mime
+    when 'image/jpeg' then '.jpg'
+    when 'image/png'  then '.png'
+    when 'image/tiff' then '.tif'
+    else '.img'
+    end
   end
 end
