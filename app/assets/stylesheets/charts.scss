@@ -17,4 +17,8 @@
     margin: 2rem 0 0 2rem;
     font-weight: bold;
     font-size: 18px;
+
+    @media(max-width: 768px) {
+        margin-right: 2rem;
+    }
 }

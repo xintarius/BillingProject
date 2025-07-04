@@ -1,17 +1,18 @@
 .top-panel
-  .settings-container
-    .user-email=t('views.layouts.logged_as')
-    .current-user-email= current_user.email
-    = render partial: 'partials/language'
-    = icon 'notifications'
-    .dropdown
-      = icon 'settings', id: 'settings-icon'
-      .dropdown-content
-        - if current_user.admin?
-          = link_to t('views.layouts.users'), users_index_path
-          = link_to t('views.layouts.roles'), roles_path
-          = link_to t('views.layouts.setting'), settings_path
-        = link_to t('views.layouts.sign_out'), destroy_user_session_path, method: :delete, class: 'no-btn'
+  .desktop-only
+    .settings-container
+      .user-email=t('views.layouts.logged_as')
+      .current-user-email= current_user.email
+      = render partial: 'partials/language'
+      = icon 'notifications'
+      .dropdown{ data: { controller: 'settings' } }
+        = icon 'settings', id: 'settings-icon', data: { action: 'click->settings#toggle' }
+        .dropdown-content.hidden{ data: { 'settings-target' => 'menu' } }
+          - if current_user.admin?
+            = link_to t('views.layouts.users'), users_index_path
+            = link_to t('views.layouts.roles'), roles_path
+            = link_to t('views.layouts.setting'), settings_path
+          = link_to t('views.layouts.sign_out'), destroy_user_session_path, method: :delete, class: 'no-btn'
 
   - if current_user.admin?
     .admin-panel-container

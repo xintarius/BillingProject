@@ -34,7 +34,8 @@ $info: $accent-color;
     flex-direction: column;
     justify-content: center;
     flex-wrap: wrap;
-    align-content: center;
+    align-content: flex-start;
+    overflow-y: auto;
 }
 
 th {
@@ -110,4 +111,21 @@ input[type=checkbox] {
 select {
     border-radius: 10px;
     border: #000000 2px solid;
+}
+
+.desktop-only {
+    @media( max-width: 768px) {
+        display: none;
+    }
+}
+
+.mobile-only {
+    display: none;
+    @media (max-width: 768px) {
+        display: block;
+    }
+}
+
+.hidden {
+    display: none;
 }
