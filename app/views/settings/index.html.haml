@@ -1,0 +1,16 @@
+.mid-panel
+  .data-settings-container
+    %h3= t('views.layouts.settings.data')
+    .personal-data-container
+      .nip-container
+        .nip-data= t('views.layouts.settings.nip')
+        %div=@nip.nip
+      .username-container
+        .username-data= t('views.layouts.settings.email')
+        %div=@username
+      .created-container
+        .user-created= t('views.layouts.settings.created_at')
+        %div=@user_created
+      .updated-container
+        .user-updated= t('views.layouts.settings.updated_at')
+        %div=@user_updated

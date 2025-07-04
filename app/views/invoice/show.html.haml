@@ -1,0 +1,30 @@
+.mid-panel
+  .personal-document-container
+    .invoice-statistics-container
+      .document-statistic-text
+        %h3 Statystki dokumentu
+      - if current_user.admin?
+        .invoice-id= "#{t('views.layouts.invoices.show.document_id')} #{@invoice_statistic.id}"
+      .invoice-nip= "#{t('views.layouts.invoices.show.nip')} #{@invoice_statistic.company.nip}"
+      .invoice-name= "#{t('views.layouts.invoices.show.name')} #{@invoice_statistic.name}"
+      .invoice-nr= "#{t('views.layouts.invoices.show.invoice_nr')} #{@invoice_statistic.invoice_nr}"
+      .invoice-st= "#{t('views.layouts.invoices.show.invoice_status')} #{@invoice_statistic.invoice_status}"
+      .invoice-description= "#{t('views.layouts.invoices.show.invoice_description')} #{@invoice_errors}"
+      .invoice-image-preview
+        = "#{t('views.layouts.invoices.show.invoice_image_preview')}"
+      .invoice-image-container
+        %a{ href: '#invoiceModal', "data-bs-toggle" => "modal" }
+          = image_tag @invoice_image, class: 'invoice-image' if @invoice_image.present?
+
+
+        #invoiceModal.modal.fade{ tabindex: "-1", aria_labelledby: "invoiceModalLabel", aria_hidden: "true" }
+          .modal-dialog.modal-dialog-centered.modal-lg
+            .modal-content
+              .modal-header
+                %h5#invoiceModalLabel.modal-title Podgląd faktury
+                %button.btn-close{ type: "button", data: { bs_dismiss: "modal" }, aria_label: "Zamknij" }
+
+              .modal-body.text-center
+                = image_tag @invoice_image, class: 'img-fluid rounded' if @invoice_image.present?
+
+= javascript_include_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js", defer: true

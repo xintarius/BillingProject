@@ -34,7 +34,8 @@ $info: $accent-color;
     flex-direction: column;
     justify-content: center;
     flex-wrap: wrap;
-    align-content: center;
+    align-content: flex-start;
+    overflow-y: auto;
 }
 
 th {
@@ -44,6 +45,19 @@ th {
 html, body {
     margin: 0;
     padding: 0;
+}
+
+table.datagrid, th:last-child {
+    padding-right: 2rem;
+}
+
+table.datagrid, th {
+    padding: 0.5rem
+}
+
+svg .invoice-status {
+    width: 100px;
+    height: 100px;
 }
 
 .welcome-section {
@@ -90,7 +104,28 @@ input {
     height: 2.5rem;
 }
 
+input[type=checkbox] {
+    height: auto;
+}
+
 select {
     border-radius: 10px;
     border: #000000 2px solid;
+}
+
+.desktop-only {
+    @media( max-width: 768px) {
+        display: none;
+    }
+}
+
+.mobile-only {
+    display: none;
+    @media (max-width: 768px) {
+        display: block;
+    }
+}
+
+.hidden {
+    display: none;
 }

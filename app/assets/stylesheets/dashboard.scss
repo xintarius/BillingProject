@@ -8,12 +8,21 @@ $first-color: rgb(33, 33, 33);
     min-height: 100vh;
     margin: 0;
     padding: 0;
+
+    @media(max-width: 768px) {
+        display: block;
+    }
 }
+
 .left-panel {
-    width: 20%;
     display: block;
     background: rgba($first-color, 0.9);
     height: inherit;
+
+    @media(max-width: 768px) {
+        background: $first-color;
+        height: 0;
+    }
 }
 
 .top-panel {
@@ -39,6 +48,14 @@ $first-color: rgb(33, 33, 33);
     padding: 0.5rem;
     gap: 1rem;
     margin-right: 1rem;
+
+    @media(max-width: 768px) {
+        margin-top: 0.25rem;
+    }
+}
+
+.left-panel .settings-container {
+    margin-left: auto;
 }
 
 .no-btn {
@@ -62,6 +79,10 @@ $first-color: rgb(33, 33, 33);
     border-bottom: #F5F1E3 1px solid;
     color: #FFFFFF;
     font-weight: bold;
+
+    @media(max-width: 768px) {
+        text-align: center;
+    }
 }
 
 .left-panel a {
@@ -87,6 +108,7 @@ a:hover {
 .companies-grid-container, .invoice-container  {
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 .add-invoices {
@@ -97,6 +119,7 @@ a:hover {
 .button {
     margin-top: 2rem;
     cursor: pointer;
+    width: 100%;
 }
 
 .flash {
@@ -117,13 +140,15 @@ a:hover {
     display: flex;
 }
 
-.user-container .user-grid, .role-container .role-grid, .invoice-grid {
+.user-container .user-grid, .role-container
+.role-grid, .invoice-grid, .invoice-vat-grid {
     margin-top: 2rem;
 }
 
 .user-container, .role-container, .company-container,
-.settlement-container, .invoice-container, .invoice-vat-container {
-    padding: 2rem;
+.settlement-container, .invoice-container, .invoices-vat-container,
+.export-container, .invoice-types-container {
+    padding: 0.5rem;
 }
 
 .invoice-grid tbody {
@@ -153,11 +178,15 @@ a:hover {
     background-color: #f1f1f1;
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown .dropdown-content {
     display: block;
 }
 
-.settings-icon {
+.dropdown-content.hidden {
+    display: none;
+}
+
+#settings-icon {
     cursor: pointer;
 }
 
@@ -169,17 +198,21 @@ a:hover {
     display: flex;
 }
 
-.invoice-vat-container {
+.invoice-vat-container, .invoice-type-container {
     display: block;
     margin-left: 0.2rem;
     padding: 1rem 1rem 0.8rem 1rem;
+
+    @media(max-width: 768px) {
+        margin-top: 2.5rem;
+    }
 }
 
 .admin-panel-container a {
     color: white;
 }
 
-.invoice-vat-container:hover {
+.invoice-vat-container:hover, .invoice-type-container:hover {
     background: rgba(255,255,255, 0.05);
 }
 
@@ -189,6 +222,15 @@ a:hover {
     display: grid;
     background: #FFFFFF;
     border-radius: 10px;
+
+    @media(max-width: 768px) {
+        margin: 0;
+    }
+
+    @media(max-width: 430px) {
+        margin: 0;
+        display: block;
+    }
 }
 
 .vat-select {
@@ -230,16 +272,29 @@ a:hover {
 
 .netto-container {
     padding: 0 0 0 0.5rem;
+
+    @media(max-width: 430px) {
+        padding: 0;
+        margin-top: 1rem;
+    }
 }
 
 .vat-container {
     width: 100%;
     padding: 0 0.5rem 0 0.5rem;
-}
 
+    @media(max-width: 430px) {
+        padding: 0;
+        margin-top: 1rem;
+    }
+}
 
 .amounts-container {
     display: flex;
+
+    @media(max-width: 430px) {
+        display: block;
+    }
 }
 
 .field-error {
@@ -254,4 +309,120 @@ a:hover {
 
 .form-control {
     border: #000000 2px solid;
+}
+
+.personal-data-container {
+    display: block;
+}
+
+.nip-container, .username-container, .created-container, .updated-container {
+    display: flex;
+}
+
+.user-email, .current-user-email {
+    color: #FFFFFF;
+}
+
+.invoice-statistics-container {
+    display: block;
+    background: #FFFFFF;
+    padding: 1rem;
+    margin: 2rem;
+    border-radius: 10px;
+}
+
+.invoice-id-text {
+    display: flex;
+}
+
+.pl-child, .en-child {
+    color: #FFFFFF;
+}
+
+.pl-child {
+    border-right: #FFFFFF 1px solid;
+    padding-right: 0.3rem;
+}
+
+.en-child {
+    padding-left: 0.3rem;
+}
+
+.invoice-image {
+    max-width: 12.5rem;
+}
+
+.invoice-image-container {
+    padding: 2rem;
+}
+
+.document-statistic-text {
+    text-align: center;
+}
+
+.left-container {
+    display: flex;
+}
+
+#burger-menu {
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+}
+
+.logged-user-container {
+    display: flex;
+    padding-left: 1.25rem;
+    margin-top: 0.5rem;
+    gap: 0.5rem;
+
+    @media(max-width: 768px) {
+        position: fixed;
+        display: flex;
+        bottom: 1rem;
+    }
+
+    @media(max-width: 430px) {
+        display: block;
+    }
+}
+
+.mobile-menu-links {
+    position: fixed;
+    background: $first-color;
+    top: 0;
+    width: 75%;
+    height: 100vh;
+    z-index: 10000;
+}
+
+.mobile-menu-links.active {
+    transform: translateX(0);
+}
+
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(13, 14, 15, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#ex-close {
+    margin-left: auto;
+    display: block;
+    margin-right: 1rem;
+    margin-top: 1rem;
+}
+
+.menu-main-container {
+    display: flex;
 }

@@ -1,5 +1,5 @@
 .mid-panel
-  .invoice-vat-container
-    = button_to 'Nowa stawka vat', new_invoice_vat_rate_path, method: :get, class: 'button'
-  .datagrid-container
-    = datagrid_table @vat_rates_grid
+  .invoices-vat-container
+    = button_to t('views.layouts.new_vat_rate'), new_invoice_vat_rate_path, method: :get, class: 'button'
+    .datagrid-container
+      = datagrid_table @vat_rates_grid, html: { class: 'table invoice-vat-grid'}

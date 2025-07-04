@@ -1,6 +1,6 @@
 .mid-panel
   .invoice-container
-    = button_to 'Nowa faktura', new_invoice_path, method: 'get', class: 'button'
+    = button_to t('views.layouts.invoices.new_invoice'), new_invoice_path, method: 'get', class: 'button'
     .datagrid-container
       = datagrid_table @invoices_grid, @assets, html: { class: 'table invoice-grid' }
       = paginate(@assets)

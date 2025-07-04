@@ -7,22 +7,22 @@
     .invoice-fields-container
       .file-field-container
         = f.file_field :file, class: 'form-control', data: { 'validation_target': 'file' }
-      = f.label 'Nip:'
+      = f.label t('views.layouts.invoices.new.nip')
       = f.text_field :nip, class: 'nip-field', data: { 'validation_target': 'nip' }
-      = f.label 'Nazwa:'
+      = f.label t('views.layouts.invoices.new.name')
       = f.text_field :name, class: 'name-field', data: { 'validation_target': 'name' }
-      = f.label 'Nr faktury:'
+      = f.label t('views.layouts.invoices.new.invoice_nr')
       = f.text_field :invoice_nr, class: 'invoice-nr-field', data: { 'validation_target': 'invoice_nr' }
-      = f.label 'Data faktury:'
+      = f.label t('views.layouts.invoices.new.invoice_date')
       = f.text_field :invoice_date, class: 'invoice-date-field', data: { 'validation_target': 'invoice_date' }
       .amounts-container
         .brutto-container
-          = f.label 'brutto', class: 'brutto-label'
+          = f.label t('views.layouts.invoices.new.gross'), class: 'brutto-label'
           = f.text_field :brutto, data: { 'validation_target': 'brutto' }, class: 'brutto-field'
         .vat-container
-          = f.label 'vat', class: 'vat-label'
-          = f.select :invoice_vat_rate , options_for_select(@vat_types.map { |vat_rate, id| ["#{vat_rate.to_i}%", id] }), class: 'vat-select'
+          = f.label t('views.layouts.invoices.new.vat'), class: 'vat-label'
+          = f.select :invoice_vat_rate, options_for_select(@vat_types.map { |vat_rate, id| ["#{vat_rate.to_i}%", id] }), class: 'vat-select'
         .netto-container
-          = f.label 'netto', class: 'netto-label'
+          = f.label t('views.layouts.invoices.new.net'), class: 'netto-label'
           = f.text_field :netto, data: {'validation_target': 'netto' }, class: 'netto-field'
       = f.submit 'Dodaj fakturę', class: 'button', data: { 'validation_target': 'submit' }

@@ -13,6 +13,10 @@ every 1.day, at: '23:59' do
   rake 'daily_invoice.create_daily_invoices'
 end
 
-every 1.minute do
+every 1.hour do
   rake 'invoices:check_invoices_status'
+end
+
+every 1.day, at: '00:05' do
+  rake 'invoices:check_and_raise_invoice_status'
 end

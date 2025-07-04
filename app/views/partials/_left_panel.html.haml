@@ -1,4 +1,31 @@
 .left-panel
-  .menu-container
-    %h2.menu Menu
-    = render partial: 'dashboard/partials/links'
+  .mobile-only
+    .menu-main-container{ data: { controller: 'menu-mobile' } }
+      .left-container
+        = icon 'burger_menu', id: 'burger-menu', data: { action: 'click->menu-mobile#toggle' }
+      .settings-container
+        = render partial: 'partials/language'
+        = icon 'notifications'
+        .dropdown{ data: { controller: 'settings' } }
+          = icon 'settings', id: 'settings-icon', data: { action: 'click->settings#toggle' }
+          .dropdown-content.hidden{ data: { 'settings-target' => 'menu' } }
+            - if current_user.admin?
+              = link_to t('views.layouts.users'), users_index_path
+              = link_to t('views.layouts.roles'), roles_path
+              = link_to t('views.layouts.setting'), settings_path
+            = link_to t('views.layouts.sign_out'), destroy_user_session_path, method: :delete, class: 'no-btn'
+
+      .mobile-menu-links.hidden{ data: { 'menu-mobile-target' => 'nav' } }
+        = icon 'ex-close', id: 'ex-close', data: { action: 'click->menu-mobile#closeButton' }
+        %h2.menu Menu
+        = render partial: 'dashboard/partials/links'
+
+        .logged-user-container
+          .user-email=t('views.layouts.logged_as')
+          .current-user-email= current_user.email
+      .mobile-menu-overlay.hidden{ data: { 'menu-mobile-target' => 'overlay', action: 'click->menu-mobile#close' } }
+
+  .desktop-only
+    .menu-container
+      %h2.menu Menu
+      = render partial: 'dashboard/partials/links'

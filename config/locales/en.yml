@@ -1,31 +1,111 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  datagrid:
+    table:
+      order:
+        asc: "↑"
+        desc: "↓"
+  views:
+    layouts:
+      users: Users
+      new_user: New user
+      roles: Roles
+      setting: Settings
+      sign_out: Sign out
+      logged_as: 'Logged as:'
+      vat_rates: Vat rates
+      invoice_types: Invoice types
+      main_page: Main page
+      my_invoices: My invoices
+      week_settlements: week settlements
+      cooperate_companies: cooperate companies
+      export_data: Export data
+      new_vat_rate: New vat rate
+      landing:
+        welcome_landing: Welcome to the website where we will help you take care of your billings.
+      dashboard_data:
+        charts-descriptions:
+          invoice_value_and_sum: Your data showing the number of invoices and their total value in the last week.
+      invoices:
+        new_invoice: New invoice
+        new:
+          select_file: Select file
+          nip: Nip
+          name: Name
+          invoice_nr: Invoice number
+          invoice_date: Invoice date
+          gross: Gross
+          vat: VAT
+          net: Net
+          add_invoice: Add invoice
+        show:
+          document_id: 'Document id:'
+          nip: 'Nip:'
+          name: 'Name:'
+          invoice_nr: 'Invoice number:'
+          invoice_status: 'Invoice status:'
+          invoice_description: 'Invoice description:'
+          invoice_image_preview: 'Image preview:'
+      settings:
+        data: My data
+        nip: 'Nip:'
+        email: 'Email:'
+        created_at: 'Created at:'
+        updated_at: 'Updated at:'
+
+    datagrid:
+      users:
+        id: Id
+        email: Email
+        created_at: Created at
+        updated_at: Updated at
+        role: Role
+        new:
+          email: Email
+          password: Password
+          role: Role
+          add: Add
+      roles:
+        id: Id
+        name: Name
+        code: Code
+      settlements:
+        gross: Gross
+        net: Net
+        billing_period: Billing period
+      vat_rates:
+        id: Id
+        vat: Vat
+        created_at: Created at
+        updated_at: Updated at
+      invoices:
+        id: Id
+        invoice_nr: Invoice number
+        name: Name
+        invoice_date: Invoice date
+        gross: Gross
+        vat: VAT
+        net: Net
+        created_at: Created at
+        updated_at: Updated at
+        invoice_status: Invoice status
+        invoice_summary: Invoices summary
+        check_invoice: Check invoice
+      invoice_types:
+        id: Id
+        invoice_type: invoice type
+        code: Code
+        created_at: Created at
+        updated_at: Updated at
+      companies:
+        id: Id
+        name: Name
+        nip: Nip
+        created_at: Created at
+        updated_at: Updated at
+      exports:
+        id: Id
+        export_name: Export name
+        subject: Subject
+        export_type: Export type
+        user: User
+        created_at: Created at

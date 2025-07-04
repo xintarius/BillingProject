@@ -3,8 +3,24 @@ class InvoiceController < ApplicationController
   before_action :authenticate_user!
   layout 'dashboard_layout'
   def index
-    @invoices_grid = InvoiceGrid.new(params[:invoice_grid_params])
+    scope = Invoice.where(user_id: current_user.id).order(id: :desc)
+    @invoices_grid = InvoiceGrid.new(params[:invoice_grid_params] || {})
+    @invoices_grid.current_user = current_user
+    @invoices_grid.scope { scope }
     @assets = @invoices_grid.assets.page(params[:page]).per(10)
+  end
+
+  def show
+    @invoice_statistic = Invoice.find(params[:id])
+    files = MinioClient.list_client_files
+    if files.present?
+      target_file = "#{@invoice_statistic.nip}_#{@invoice_statistic.id}"
+      matched_file = files.find { |file| file.include?(target_file) }
+      @invoice_image = matched_file ? MinioClient.presigned_url(matched_file) : nil
+    else
+      @invoice_image = 'empty'
+    end
+    @invoice_errors = convert_description_errors(@invoice_statistic)
   end
 
   def new
@@ -25,17 +41,21 @@ class InvoiceController < ApplicationController
   private
 
   def service_params
-    vat = InvoiceVatRate.find(set_vat)
-    company_id = Company.find_or_create_by!(nip: set_regex_nip)
-    invoice_params = strong_params.to_h.merge(company_id: company_id.id,
+    invoice_params = strong_params.to_h.merge(company_id: find_company.id,
                                               invoice_type_id: 1,
                                               brutto: set_brutto,
                                               netto: set_netto,
-                                              invoice_vat_rate_id: vat.id)
+                                              invoice_vat_rate_id: find_vat.id,
+                                              user_id: current_user.id)
     Invoice.create!(invoice_params)
+    send_file_or_return
+  end
+
+  def send_file_or_return
     return if set_file.blank?
 
-    ReaderService.send_file(set_file, company_id)
+    create_member
+    ReaderService.send_file(set_file, find_company)
   end
 
   def set_file
@@ -54,6 +74,36 @@ class InvoiceController < ApplicationController
     params[:invoice][:nip].gsub(/[-\s]/, '')
   end
 
+  def find_vat
+    InvoiceVatRate.find(set_vat)
+  end
+
+  def find_company
+    Company.find_or_create_by!(nip: set_regex_nip)
+  end
+
+  def create_member
+    Member.create!(user_id: current_user.id, company_id: find_company.id)
+  end
+
+  def convert_description_errors(invoice)
+    return if invoice.description_error.blank?
+
+    parse_errors = JSON.parse(invoice.description_error)
+    parse_errors.map { |e| translate_error(e) }.compact
+  end
+
+  def translate_error(error)
+    case error
+    when /NIP error/i
+      'Problem z błędnie wpisanym nipem.'
+    when /Cash error/i
+      'Problem z błędnie wpisaną kwotą.'
+    else
+      'Wystapił nieznany błąd.'
+    end
+  end
+
   def set_vat
     params[:invoice][:invoice_vat_rate].to_i
   end
@@ -61,6 +111,6 @@ class InvoiceController < ApplicationController
   def strong_params
     return if params[:invoice].blank?
 
-    params.expect(invoice: %i[name invoice_date invoice_nr brutto netto])
+    params.expect(invoice: %i[name invoice_date invoice_nr brutto netto user_id])
   end
 end
