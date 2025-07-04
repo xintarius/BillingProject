@@ -129,3 +129,9 @@ select {
 .hidden {
     display: none;
 }
+
+input[readonly] {
+    background-color: #eee;
+    color: #666;
+    cursor: not-allowed;
+}
