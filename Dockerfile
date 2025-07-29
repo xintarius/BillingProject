@@ -18,12 +18,14 @@ RUN apt-get update -qq && \
     gnupg \
     cron \
     nano \
-tzdata \
+    tzdata \
     netcat-openbsd \
+    python3 \
+    python3-pip \
+    python3-dev \
     tesseract-ocr \
     tesseract-ocr-pol && \
-  curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-  apt-get install -y nodejs && \
+  pip3 install --no-cache-dir numpy opencv-python-headless && \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Prepare app directories

@@ -24,6 +24,14 @@ gem 'inline_svg'
 
 gem 'rtesseract'
 
+gem 'text'
+
+gem 'redis'
+
+gem 'pycall'
+
+gem 'damerau-levenshtein'
+
 gem 'mini_magick'
 
 gem 'pdf-reader'
