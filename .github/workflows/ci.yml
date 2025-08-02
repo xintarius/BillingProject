@@ -38,10 +38,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ls -l
           gem install bundler
           bundle install
-          sudo apt-get update && sudo apt-get install -y libvips
+
+          sudo apt-get update && sudo apt-get install -y \
+            libvips \
+            tesseract-ocr \
+            tesseract-ocr-pol \
+            imagemagick \
+            python3-opencv \
+            python3-pip
+
+          pip3 install opencv-python numpy
 
       - name: Run tests
         run: |

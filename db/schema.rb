@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_23_051353) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_22_100123) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -86,6 +86,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_23_051353) do
     t.integer "invoice_vat_rate_id"
     t.integer "user_id"
     t.string "ocr_image_phase"
+    t.jsonb "invoice_data"
     t.index ["company_id"], name: "index_invoices_on_company_id"
     t.index ["invoice_type_id"], name: "index_invoices_on_invoice_types_id"
   end

@@ -44,8 +44,8 @@ namespace :invoices do
   end
 
   def recognize_data(files)
-    files.each do |file_key|
-      ConnectionHelper.safe_push(OcrWorker, file_key)
+    files.in_groups_of(5, false).each do |batch|
+      ConnectionHelper.safe_push(OcrWorker, batch)
     end
   end
 

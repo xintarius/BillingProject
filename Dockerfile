@@ -3,6 +3,7 @@ FROM ruby:3.4.1-slim
 ARG RAILS_ENV
 ENV RAILS_ENV="${RAILS_ENV:-development}"
 ENV BUNDLE_PATH="/usr/local/bundle"
+ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /rails
 
@@ -18,12 +19,17 @@ RUN apt-get update -qq && \
     gnupg \
     cron \
     nano \
-tzdata \
+    tzdata \
     netcat-openbsd \
+    python3 \
+    python3-venv \
+    python3-pip \
+    python3-dev \
     tesseract-ocr \
-    tesseract-ocr-pol && \
-  curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-  apt-get install -y nodejs && \
+    tesseract-ocr-pol \
+    imagemagick && \
+  python3 -m venv /opt/venv && \
+  /opt/venv/bin/pip install --no-cache-dir numpy opencv-python-headless && \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Prepare app directories
