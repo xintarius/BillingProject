@@ -17,6 +17,7 @@ RUN apt-get update -qq && \
     libvips42 \
     curl \
     gnupg \
+    ca-certificates \
     cron \
     nano \
     tzdata \
@@ -28,6 +29,8 @@ RUN apt-get update -qq && \
     tesseract-ocr \
     tesseract-ocr-pol \
     imagemagick && \
+  curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+  apt-get install --no-install-recommends -y nodejs && \
   python3 -m venv /opt/venv && \
   /opt/venv/bin/pip install --no-cache-dir numpy opencv-python-headless && \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*

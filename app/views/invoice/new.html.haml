@@ -14,7 +14,9 @@
       = f.label t('views.layouts.invoices.new.invoice_nr')
       = f.text_field :invoice_nr, class: 'invoice-nr-field', data: { 'validation_target': 'invoice_nr' }
       = f.label t('views.layouts.invoices.new.invoice_date')
-      = f.text_field :invoice_date, class: 'invoice-date-field', data: { 'validation_target': 'invoice_date' }
+      .invoice-date-container{ data: { controller: 'datepicker'}}
+        = f.text_field :invoice_date, class: 'invoice-date-field', autocomplete: 'off', data: { input: true, 'validation_target': 'invoice_date', "datepicker-locale": I18n.locale.to_s  }
+        = icon 'calendar', id: 'calendar',  data: { toggle: true }
       .amounts-container{ data: { controller: 'sum' } }
         .brutto-container
           = f.label t('views.layouts.invoices.new.gross'), class: 'brutto-label'
