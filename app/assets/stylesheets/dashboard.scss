@@ -33,6 +33,10 @@ $first-color: rgb(33, 33, 33);
 
 .mid-panel {
     display: block;
+
+    @media(max-width: 768px) {
+        display: grid;
+    }
 }
 
 .main-container {
@@ -222,7 +226,7 @@ a:hover {
     background: #FFFFFF;
     border-radius: 10px;
 
-    @media(max-width: 768px) {
+    @media(max-width: 1100px) {
         margin: 0;
     }
 }
@@ -260,7 +264,7 @@ a:hover {
 }
 
 .brutto-container {
-    display: block;
+
     padding: 0 0.5rem 0 0;
 }
 
