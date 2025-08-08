@@ -16,7 +16,8 @@ en:
       invoice_types: Invoice types
       main_page: Main page
       my_invoices: My invoices
-      week_settlements: week settlements
+      week_settlements: Week settlements
+      month_settlements: Month settlements
       cooperate_companies: cooperate companies
       export_data: Export data
       new_vat_rate: New vat rate
@@ -51,6 +52,7 @@ en:
         email: 'Email:'
         created_at: 'Created at:'
         updated_at: 'Updated at:'
+        no_data: Empty
 
     datagrid:
       users:

@@ -19,6 +19,7 @@ pl:
       main_page: Strona główna
       my_invoices: Moje faktury
       week_settlements: Rozliczenia tygodniowe
+      month_settlements: Rozliczenia miesięczne
       cooperate_companies: Firmy współpracujące
       export_data: Eksport danych
       new_vat_rate: Nowa stawka vat
@@ -53,6 +54,7 @@ pl:
         email: 'Email:'
         created_at: 'Dołączono:'
         updated_at: 'Zmodyfikowano:'
+        no_data: Brak
     datagrid:
       users:
         id: id

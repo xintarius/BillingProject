@@ -1,0 +1,5 @@
+.mid-panel
+  .settlement-container
+    .datagrid-container
+      = datagrid_table @week_settlement_grid, @assets, html: { class: 'table settlement-grid'}
+      = paginate(@assets)

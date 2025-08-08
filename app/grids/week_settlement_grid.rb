@@ -1,5 +1,5 @@
 # settlement_grid
-class SettlementGrid
+class WeekSettlementGrid
   include Datagrid
 
   scope do

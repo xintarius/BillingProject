@@ -4,7 +4,7 @@
     .personal-data-container
       .nip-container
         .nip-data= t('views.layouts.settings.nip')
-        %div=@nip.nip
+        %div=@nip&.nip || t('views.layouts.settings.no_data')
       .username-container
         .username-data= t('views.layouts.settings.email')
         %div=@username
