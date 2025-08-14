@@ -1,12 +1,5 @@
 name: Ruby on Rails CI
 
-env:
-  DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-  DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-  DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-  DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-  SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-
 on:
   push:
     branches:
@@ -40,7 +33,6 @@ jobs:
         run: |
           gem install bundler
           bundle install
-
           sudo apt-get update && sudo apt-get install -y \
             libvips \
             tesseract-ocr \
@@ -48,9 +40,7 @@ jobs:
             imagemagick \
             python3-opencv \
             python3-pip
-
           pip3 install opencv-python numpy
-
       - name: Run tests
         run: |
           bundle exec rake db:create db:migrate RAILS_ENV=development

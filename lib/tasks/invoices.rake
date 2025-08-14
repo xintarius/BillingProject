@@ -9,7 +9,9 @@ namespace :invoices do
     Rails.logger.info 'Start checking documents status with initial status...'
     start_date = Time.zone.now.beginning_of_week
     end_date = Time.zone.now.end_of_week
-    invoice = Invoice.where(invoice_status: 'initial', created_at: start_date..end_date).pluck(:file_path)
+    invoice = Invoice.where(invoice_status: 'initial', created_at: start_date..end_date)
+                     .lock('FOR UPDATE SKIP LOCKED')
+                     .pluck(:file_path)
     Rails.logger.info "Found #{invoice.count} documents with initial status"
     Rails.logger.info 'Start calculate documents...'
     equal_data(invoice)
@@ -44,8 +46,8 @@ namespace :invoices do
   end
 
   def recognize_data(files)
-    files.in_groups_of(5, false).each do |batch|
-      ConnectionHelper.safe_push(OcrWorker, batch)
+    files.each do |file|
+      ConnectionHelper.safe_push(OcrWorker, file)
     end
   end
 

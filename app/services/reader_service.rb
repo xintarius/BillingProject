@@ -26,7 +26,6 @@
       if extension == 'pdf'
         extract_pdf_for_task(file)
       else
-        file = ReaderService.convert_to_png_if_needed(file)
         extract_image_for_controller(file)
       end
 
@@ -55,11 +54,11 @@
         ReaderService.read_nip_with_adaptation(reading_file(file), invoice.company&.nip, temp_path, invoice)
       end
     rescue StandardError => e
-      puts "OCR image error: #{e.message}"
+      puts "#{DateTime.now}: OCR image error: #{e.message}"
     end
 
     def self.read_nip_with_adaptation(file_path, expected_nip, tmp_path, invoice)
-      puts "starting read nip with adaptation for file #{file_path}"
+      puts "#{DateTime.now}: starting read nip with adaptation for file #{file_path}"
       best_result = nil
       best_ocr_fragment = []
       variants = preprocessing_options_cv.reject { |opts| opts[:rotate] }
@@ -76,23 +75,23 @@
       best_result == expected_nip
     end
 
-    def self.convert_to_png_if_needed(file)
-      mime = Marcel::MimeType.for(Pathname.new(file.path))
+    # def self.convert_to_png_if_needed(file)
+    #   #mime = Marcel::MimeType.for(Pathname.new(file.path))
+    #
+    #   #return file if mime == 'image/png'
+    #
+    #   image = Vips::Image.new_from_file(file.path, access: :sequential)
+    #
+    #   tempfile = Tempfile.new(['converted', '.png'])
+    #   image.write_to_file(tempfile.path)
+    #   tempfile
+    # end
 
-      return file if mime == 'image/png'
-
-      image = Vips::Image.new_from_file(file.path, access: :sequential)
-
-      tempfile = Tempfile.new(['converted', '.png'])
-      image.write_to_file(tempfile.path)
-      tempfile
-    end
-
-    def self.extract_image_for_task(file, invoice)
+    def self.extract_image_for_task(file, invoice, mime)
       @resize_scale = compute_max_resize_scale(file)
-
-      temp_input_path = "/tmp/original_ocr_image_#{SecureRandom.hex(4)}.png"
-      temp_output_path = "/tmp/shared_temp_image_#{SecureRandom.hex(4)}.jpg"
+      ext = OcrWorker.mime_extension(mime)
+      temp_input_path = "/tmp/original_ocr_image_#{SecureRandom.hex(4)}#{ext}"
+      temp_output_path = "/tmp/shared_temp_image_#{SecureRandom.hex(4)}#{ext}"
 
       File.open(temp_input_path, 'wb') do |f|
         if file.respond_to?(:read)
@@ -105,10 +104,10 @@
       end
 
       result = ReaderService.read_nip_with_adaptation(temp_input_path, invoice.company&.nip, temp_output_path, invoice)
-      puts "read_nip_with_adaptation result #{result}"
+      puts "#{DateTime.now}: read_nip_with_adaptation result #{result}"
       invoice.update!(invoice_status: 'failed', description_error: 'Problem with the nip') unless result
     rescue StandardError => e
-      puts "OCR image error: #{e.message}"
+      puts "#{DateTime.now}: OCR image error: #{e.message}"
     end
 
 
@@ -133,10 +132,10 @@
 
       normalize_result = normalize_nip(result)
       normalize_expected = normalize_nip(expected)
-      puts "normalize_result #{normalize_result} vs normalize_expected #{normalize_expected}"
+      puts "#{DateTime.now}: normalize_result #{normalize_result} vs normalize_expected #{normalize_expected}"
       if normalize_result == normalize_expected
         best_ocr_fragment << ocr
-        puts "[COMPARE_NIP] Normalized result: #{normalize_result.inspect}, expected: #{normalize_expected.inspect}"
+        puts "#{DateTime.now}: [COMPARE_NIP] Normalized result: #{normalize_result.inspect}, expected: #{normalize_expected.inspect}"
         return 1.0
       end
 
@@ -148,43 +147,43 @@
     end
 
     def self.try_variant(variant, file_path, expected_nip, tmp_path, best_ocr_fragment)
-      puts "Trying variant: #{variant.inspect} on file: #{file_path}"
+      puts "#{DateTime.now}: Trying variant: #{variant.inspect} on file: #{file_path}"
 
       image = preprocess_image(variant, file_path, tmp_path)
-      puts "IMAGE SET: #{image}"
+      puts "#{DateTime.now}: IMAGE SET: #{image}"
       ocr_text = manage_tesseract(image)
-      puts "[TESSERACT] output: #{ocr_text}"
+      puts "#{DateTime.now}: [TESSERACT] output: #{ocr_text}"
 
       result = extract_and_fix(ocr_text, variant, expected_nip, best_ocr_fragment)
       return result if result
 
-      puts "try variant #{result}"
+      puts "#{DateTime.now}: try variant #{result}"
 
       return nil unless extract_nip_candidates(ocr_text).empty?
 
       # Fallback OpenCV
       image = preprocess_with_opencv_py(variant, file_path)
-      puts "[DEBUG] OpenCV returned path: #{image.inspect}"
+      puts "#{DateTime.now}: [DEBUG] OpenCV returned path: #{image.inspect}"
       ocr_text = manage_tesseract(image)
 
       result = extract_and_fix(ocr_text, variant, expected_nip, best_ocr_fragment)
       return result if result
 
-      puts "extract_and_fix result: #{result}"
-      puts "[DEBUG] NIP candidates: #{extract_nip_candidates(ocr_text).inspect}"
+      puts "#{DateTime.now}: extract_and_fix result: #{result}"
+      puts "#{DateTime.now}: [DEBUG] NIP candidates: #{extract_nip_candidates(ocr_text).inspect}"
       return nil if extract_nip_candidates(ocr_text).to_s.scan(/\d/).size >= 8
 
       get_candidate_nips(variant, expected_nip, file_path, tmp_path, best_ocr_fragment)
-      puts "image deleted: #{image}"
+      puts "#{DateTime.now}: image deleted: #{image}"
     end
 
     def self.manage_tesseract(image)
-      puts "[TESSERACT] input: #{image.inspect}"
-      puts "[DEBUG] Image path: #{image.is_a?(MiniMagick::Image) ? image.path : image}"
+      puts "#{DateTime.now}: [TESSERACT] input: #{image.inspect}"
+      puts "#{DateTime.now}: [DEBUG] Image path: #{image.is_a?(MiniMagick::Image) ? image.path : image}"
       path = image.is_a?(MiniMagick::Image) ? image.path : image
-      puts "PATH #{path}"
+      puts "#{DateTime.now}: PATH #{path}"
       start = RTesseract.new(path, lang: 'pol', options: { tessedit_char_whitelist: '0123456789' }).to_s
-      puts "TESSERACT #{start}"
+      puts "#{DateTime.now}: TESSERACT #{start}"
       start
     end
 
@@ -193,17 +192,17 @@
     end
 
     def self.preprocess_image(options = {}, file, tmp_path)
-      puts "START PREPROCESS_IMAGE WITH OPTIONS: #{options}, FILE: #{file} AND TMP_PATH: #{tmp_path}"
+      puts "#{DateTime.now}: START PREPROCESS_IMAGE WITH OPTIONS: #{options}, FILE: #{file} AND TMP_PATH: #{tmp_path}"
       path = file.respond_to?(:path) ? file.path : file
-      puts "THE PATH: #{path}"
+      puts "#{DateTime.now}: THE PATH: #{path}"
       image = MiniMagick::Image.open(path).clone
-      puts "IMAGE: #{image}"
+      puts "#{DateTime.now}: IMAGE: #{image}"
       set_mini_magick_options(image, options)
-      puts "MINIMAGICK OPTIONS: #{set_mini_magick_options(image, options)}"
+      puts "#{DateTime.now}: MINIMAGICK OPTIONS: #{set_mini_magick_options(image, options)}"
       image.write(tmp_path)
       manage_mini_magick(tmp_path)
     rescue StandardError => e
-      puts "[MiniMagick failed: #{e.message}] → Falling back to OpenCV"
+      puts "#{DateTime.now}: [MiniMagick failed: #{e.message}] → Falling back to OpenCV"
       preprocess_with_opencv_py(options, file)
     end
 
@@ -211,17 +210,17 @@
       @cv2 = CV2
       @numpy = NUMPY
 
-      puts "[OpenCV] Reading image from: #{file}"
+      puts "#{DateTime.now}: [OpenCV] Reading image from: #{file}"
 
       img = @cv2.imread(file.to_s, @cv2.IMREAD_GRAYSCALE)
       img = resize_image_opencv(img)
-      puts "[OpenCV] Original image shape: #{img.shape}"
+      puts "#{DateTime.now}: [OpenCV] Original image shape: #{img.shape}"
 
       img_option = use_img_options(@cv2, img, options, @numpy)
 
       tmp_path = "#{Dir.tmpdir}/opencv_py_preprocessed_#{SecureRandom.hex}.png"
       @cv2.imwrite(tmp_path, img_option)
-      puts "[OpenCV] Saved preprocessed image to: #{tmp_path}"
+      puts "#{DateTime.now}: [OpenCV] Saved preprocessed image to: #{tmp_path}"
 
       MiniMagick::Image.open(tmp_path)
     end
@@ -236,7 +235,7 @@
         new_width = (width * scale).round
         new_height = (height * scale).round
         resized = @cv2.resize(image, [new_width, new_height])
-        puts "[OpenCV] Resized image from (#{width}, #{height}) to (#{new_width}, #{new_height})"
+        puts "#{DateTime.now}: [OpenCV] Resized image from (#{width}, #{height}) to (#{new_width}, #{new_height})"
         resized
       else
         image
@@ -262,7 +261,7 @@
         next if fixed.nil?
 
         score = compare_nip(ocr, fixed, expected_nip, best_ocr_fragment)
-        puts "Get nip: #{fixed} from variant: #{variant.inspect}"
+        puts "#{DateTime.now}: Get nip: #{fixed} from variant: #{variant.inspect}"
         return fixed if (score - 1.0).abs < PRECISION
       end
       nil
@@ -277,7 +276,7 @@
           invoice_status: 'failed',
           ocr_image_phase: 'nip_step_completed' # <-- to dodaj nawet przy błędzie!
         )
-        puts 'ocr not completed, there are problems with the image reading'
+        puts "#{DateTime.now}: ocr not completed, there are problems with the image reading"
         return
       end
 
@@ -290,23 +289,23 @@
 
 
     def self.get_candidate_nips(variant, expected_nip, file_path, tmp_path, best_ocr_fragment)
-      puts "[DEBUG] get_candidate_nips CALLED with file: #{file_path}"
+      puts "#{DateTime.now}: [DEBUG] get_candidate_nips CALLED with file: #{file_path}"
 
       variants = mutate_variant(variant)
-      puts "[DEBUG] Mutated variants: #{variants.inspect}"
+      puts "#{DateTime.now}: [DEBUG] Mutated variants: #{variants.inspect}"
 
       variants.each do |mutate|
-        puts "[DEBUG] Trying mutated variant: #{mutate.inspect}"
+        puts "#{DateTime.now}: [DEBUG] Trying mutated variant: #{mutate.inspect}"
         image = preprocess_image(mutate, file_path, tmp_path)
         text = manage_tesseract(image)
-        puts "[DEBUG] OCR result for mutated variant: #{text.inspect}"
+        puts "#{DateTime.now}: [DEBUG] OCR result for mutated variant: #{text.inspect}"
 
         result = extract_nips(text, mutate, expected_nip, best_ocr_fragment)
-        puts "[DEBUG] extract_nips result: #{result.inspect}"
+        puts "#{DateTime.now}: [DEBUG] extract_nips result: #{result.inspect}"
         return result if result
       end
 
-      puts "[DEBUG] No valid NIP found in mutated variants."
+      puts "#{DateTime.now}: [DEBUG] No valid NIP found in mutated variants."
       nil
     end
 
@@ -317,7 +316,7 @@
         next if fixed.nil?
 
         score = compare_nip(ocr, fixed, expected_nip, best_ocr_fragment)
-        puts "Get nip: #{fixed} from variant: #{mutate.inspect}"
+        puts "#{DateTime.now}: Get nip: #{fixed} from variant: #{mutate.inspect}"
         if (score - 1.0).abs < PRECISION
           @found_valid_nip = true
           return fixed
@@ -338,7 +337,7 @@
     end
 
     def self.fix_common_ocr_errors(ocr, nip, expected_nip, best_ocr_fragment)
-      puts "fix common errors nip: #{nip}"
+      puts "#{DateTime.now}: fix common errors nip: #{nip}"
       return nil if nip.nil?
 
       nip = nip.gsub(/\D/, '')
@@ -394,18 +393,18 @@
     end
 
     def self.apply_clahe(cv2, img)
-      puts '[OpenCV] Applying CLAHE'
+      puts "#{DateTime.now}: [OpenCV] Applying CLAHE"
       clahe = cv2.createCLAHE(2.0, [8, 8])
       clahe.apply(img)
     end
 
     def self.treshold_image(cv2, img, options)
       if options[:adaptive_threshold]
-        puts '[OpenCV] Applying adaptiveThreshold'
+        puts "#{DateTime.now}: [OpenCV] Applying adaptiveThreshold"
         cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                               cv2.THRESH_BINARY, 11, 2)
       elsif options[:threshold]
-        puts '[OpenCV] Applying simple threshold'
+        puts "#{DateTime.now}: [OpenCV] Applying simple threshold"
         _, img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
       end
       img
@@ -414,12 +413,12 @@
     def self.adjust_contrast(cv2, img, options)
       alpha = options[:contrast_alpha] || 1.5
       beta = options[:contrast_beta] || 20
-      puts "[OpenCV] Adjusting contrast with alpha: #{alpha}, beta: #{beta}"
+      puts "#{DateTime.now}: [OpenCV] Adjusting contrast with alpha: #{alpha}, beta: #{beta}"
       cv2.convertScaleAbs(img, alpha, beta)
     end
 
     def self.sharpen_image(cv2, numpy, img)
-      puts '[OpenCV] Applying sharpening filter'
+      puts "#{DateTime.now}: [OpenCV] Applying sharpening filter"
       kernel = numpy.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
       cv2.filter2D(img, -1, kernel)
     end
@@ -428,17 +427,17 @@
       kernel_morph = cv2.getStructuringElement(cv2.MORPH_RECT, [3, 3])
 
       if options[:morph_close]
-        puts '[OpenCV] Applying morphologyEx - Close'
+        puts "#{DateTime.now}: [OpenCV] Applying morphologyEx - Close"
         img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel_morph)
       end
 
       if options[:dilate]
-        puts "[OpenCV] Dilating image, iterations: #{options[:dilate]}"
+        puts "#{DateTime.now}: [OpenCV] Dilating image, iterations: #{options[:dilate]}"
         img = cv2.dilate(img, kernel_morph, options[:dilate])
       end
 
       if options[:erode]
-        puts "[OpenCV] Eroding image, iterations: #{options[:erode]}"
+        puts "#{DateTime.now}: [OpenCV] Eroding image, iterations: #{options[:erode]}"
         img = cv2.erode(img, kernel_morph, options[:erode])
       end
       img
@@ -446,12 +445,12 @@
 
     def self.blur_image(cv2, img, blur_value)
       blur_value ||= 3
-      puts "[OpenCV] Applying GaussianBlur with kernel size: #{blur_value}x#{blur_value}"
+      puts "#{DateTime.now}: [OpenCV] Applying GaussianBlur with kernel size: #{blur_value}x#{blur_value}"
       cv2.GaussianBlur(img, [blur_value, blur_value], 0)
     end
 
     def self.denoise_image(cv2, img)
-      puts '[OpenCV] Applying fastNlMeansDenoising'
+      puts "#{DateTime.now}: [OpenCV] Applying fastNlMeansDenoising"
       cv2.fastNlMeansDenoising(img, nil, 10)
     end
 
@@ -459,19 +458,19 @@
       return img unless scale
 
       scale = 2.0 if scale == true
-      puts "[OpenCV] Resizing image with scale factor: #{scale}"
+      puts "#{DateTime.now}: [OpenCV] Resizing image with scale factor: #{scale}"
       resized = cv2.resize(img, nil, scale, scale, cv2.INTER_CUBIC)
-      puts "[OpenCV] Resized image shape: #{resized.shape}"
+      puts "#{DateTime.now}: [OpenCV] Resized image shape: #{resized.shape}"
       resized
     end
 
     def self.rotate_image(cv2, img, angle)
       case angle
       when 90
-        puts '[OpenCV] Rotating image 90 degrees clockwise'
+        puts "#{DateTime.now}: [OpenCV] Rotating image 90 degrees clockwise"
         cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
       when 270
-        puts '[OpenCV] Rotating image 270 degrees clockwise (or 90 counterclockwise)'
+        puts "#{DateTime.now}: [OpenCV] Rotating image 270 degrees clockwise (or 90 counterclockwise)"
         cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
       end
       img
@@ -507,7 +506,7 @@
     end
 
     def self.extract_nip_candidates(ocr_text)
-      puts "Extracting NIP candidates from OCR text: #{ocr_text.inspect}"
+      puts "#{DateTime.now}: Extracting NIP candidates from OCR text: #{ocr_text.inspect}"
       return [] unless ocr_text
 
       matches = []
