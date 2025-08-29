@@ -10,7 +10,6 @@ gem 'datagrid'
 gem 'devise'
 gem 'groupdate'
 gem 'kaminari'
-gem 'ruby-vips'
 gem 'shrine'
 gem 'whenever', require: false
 
@@ -24,15 +23,11 @@ gem 'sidekiq-unique-jobs', '~> 8.0'
 
 gem 'inline_svg'
 
-gem 'rtesseract'
-
 gem 'text'
 
 gem 'redis'
 
-gem 'pycall'
-
-gem 'damerau-levenshtein'
+gem 'httparty'
 
 gem 'mini_magick'
 

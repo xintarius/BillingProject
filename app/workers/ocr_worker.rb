@@ -1,56 +1,112 @@
-# ocr_worker
+# app/workers/ocr_worker.rb
 class OcrWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :ocr, retry: 3, lock_args: ->(args) { [args] }
+  sidekiq_options queue: :ocr, retry: 3
+
+  MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
 
   def perform(file_key)
     puts "#{DateTime.now}: 📥 Download file: #{file_key}"
 
     file_content = MinioClient.get_object(file_key)
+    file_content = resize_image_if_needed(file_content)
 
-    if file_key.end_with?('.pdf')
-      Tempfile.open(%w[ocr_input .pdf]) do |tempfile|
-        tempfile.binmode
-        tempfile.write(file_content)
-        tempfile.rewind
-        ReaderService.extract_pdf_for_task(tempfile.path)
-      end
-    else
-      Tempfile.open(['ocr_input', '.tmp']) do |tempfile|
-        tempfile.binmode
-        tempfile.write(file_content)
-        tempfile.rewind
-        mime = Marcel::MimeType.for(tempfile)
-
-        puts "#{DateTime.now}: Detected MIME: #{mime}"
-
-        original = Tempfile.new(['ocr_input', self.class.mime_extension(mime)])
-        original.binmode
-        original.write(file_content)
-        original.rewind
-
-        #converted = ReaderService.convert_to_png_if_needed(original)
-
-        invoice = Invoice.find_by(file_path: file_key)
-        ReaderService.extract_image_for_task(original.path, invoice, mime)
-
-        # converted.close
-        # converted.unlink
-        original.close
-        original.unlink
-      end
+    if file_content.bytesize > MAX_FILE_SIZE
+      puts "❌ File still too large after resize: #{file_content.bytesize}B"
+      invoice = Invoice.find_or_initialize_by(file_path: file_key)
+      invoice.update!(
+        ocr_image_phase: 'too_large',
+        invoice_data: { "error" => "File exceeds size limit after resize" }
+      )
+      return
     end
-  rescue StandardError => e
-    puts "#{DateTime.now}: Ocr error for #{file_key}: #{e.message}"
+
+    # wysyłka do Azure
+    response = HTTParty.post(
+      "#{endpoint}/formrecognizer/documentModels/prebuilt-read:analyze?api-version=#{api_version}",
+      headers: {
+        "Ocp-Apim-Subscription-Key" => api_key,
+        "Content-Type" => content_type(file_key)
+      },
+      body: file_content
+    )
+
+    if response.code == 202
+      parsed = poll_until_done(response.headers["operation-location"])
+    elsif response.code == 200
+      parsed = JSON.parse(response.body)
+    else
+      invoice = Invoice.find_or_initialize_by(file_path: file_key)
+      invoice.update!(ocr_image_phase: 'to_large')
+    end
+
+    # zapis wyniku
+    invoice = Invoice.find_or_initialize_by(file_path: file_key)
+    invoice.update!(
+      ocr_image_phase: "done",
+      invoice_data: parsed
+    )
+
+    puts "#{DateTime.now}: ✅ OCR saved for #{file_key}"
+
+  rescue => e
+    invoice = Invoice.find_or_initialize_by(file_path: file_key)
+    invoice.update!(
+      ocr_status: "error",
+      invoice_data: { "error" => e.message }
+    )
+    puts "#{DateTime.now}: ❌ OCR error for #{file_key}: #{e.message}"
   end
 
-  def self.mime_extension(mime)
-    case mime
-    when 'image/jpeg' then '.jpeg'
-    when 'image/jpg' then '.jpg'
-    when 'image/png'  then '.png'
-    when 'image/tiff' then '.tiff'
-    else '.img'
+  private
+
+  def content_type(file_key)
+    case File.extname(file_key).downcase
+    when ".png" then "image/png"
+    when ".jpg", ".jpeg" then "image/jpeg"
+    else "application/octet-stream"
     end
+  end
+
+  def resize_image_if_needed(file_content)
+    return file_content if file_content.bytesize <= MAX_FILE_SIZE
+
+    image = MiniMagick::Image.read(file_content)
+    while image.to_blob.bytesize > MAX_FILE_SIZE
+      image.resize "80%"
+      image.quality 80 if image.type.downcase == "jpeg"
+    end
+    image.to_blob
+  end
+
+  def poll_until_done(operation_location)
+      loop do
+        response = HTTParty.get(
+          operation_location,
+          headers: { 'Ocp-Apim-Subscription-Key' => api_key }
+        )
+        parsed = JSON.parse(response.body)
+
+        case parsed['status']
+        when 'succeeded'
+          return parsed
+        when 'failed'
+          raise "Azure OCR async operation failed: #{parsed}"
+        else
+          sleep POLL_INTERVAL
+        end
+      end
+    end
+
+  def endpoint
+    ENV.fetch('AZURE_RECEIPT_ENDPOINT')
+  end
+
+  def api_key
+    ENV.fetch('AZURE_API_KEY')
+  end
+
+  def api_version
+    '2023-07-31'
   end
 end

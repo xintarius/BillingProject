@@ -14,7 +14,6 @@ RUN apt-get update -qq && \
     git \
     pkg-config \
     libpq-dev \
-    libvips42 \
     curl \
     gnupg \
     ca-certificates \
@@ -22,17 +21,9 @@ RUN apt-get update -qq && \
     nano \
     tzdata \
     netcat-openbsd \
-    python3 \
-    python3-venv \
-    python3-pip \
-    python3-dev \
-    tesseract-ocr \
-    tesseract-ocr-pol \
     imagemagick && \
   curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
   apt-get install --no-install-recommends -y nodejs && \
-  python3 -m venv /opt/venv && \
-  /opt/venv/bin/pip install --no-cache-dir numpy opencv-python-headless && \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Prepare app directories

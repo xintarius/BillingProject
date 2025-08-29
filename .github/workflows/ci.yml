@@ -20,6 +20,9 @@ jobs:
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+      AZURE_API_KEY: ${{ secrets.AZURE_API_KEY }}
+      AZURE_API_VERSION: ${{ secrets.AZURE_API_VERSION }}
+      AZURE_RECEIPT_ENDPOINT: ${{ secrets.AZURE_RECEIPT_ENDPOINT }}
     steps:
       - name: Set up repository
         uses: actions/checkout@v3
@@ -34,13 +37,7 @@ jobs:
           gem install bundler
           bundle install
           sudo apt-get update && sudo apt-get install -y \
-            libvips \
-            tesseract-ocr \
-            tesseract-ocr-pol \
             imagemagick \
-            python3-opencv \
-            python3-pip
-          pip3 install opencv-python numpy
       - name: Run tests
         run: |
           bundle exec rake db:create db:migrate RAILS_ENV=development
