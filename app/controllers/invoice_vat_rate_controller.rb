@@ -1,6 +1,5 @@
 # invoice_vat_type_controller
 class InvoiceVatRateController < ApplicationController
-  before_action :authenticate_user!
   before_action :require_admin
   layout 'dashboard_layout'
 

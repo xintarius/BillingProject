@@ -1,6 +1,5 @@
 # settlement controller
 class SettlementController < ApplicationController
-  before_action :authenticate_user!
   layout 'dashboard_layout'
   def week_settlements
     year = Time.zone.today.year

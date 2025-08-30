@@ -1,7 +1,26 @@
 .links-container
-  .home= link_to t('views.layouts.main_page'), dashboard_path
-  .invoice= link_to t('views.layouts.my_invoices'), invoice_index_path
-  .settlements= link_to t('views.layouts.week_settlements'), week_settlements_path
-  .month_settlements= link_to t('views.layouts.month_settlements'), month_settlements_path
-  .companies= link_to t('views.layouts.cooperate_companies'), company_properties_path
-  .export= link_to t('views.layouts.export_data'), exports_path
+  = link_to dashboard_path, class: 'home' do
+    = icon 'dashboard'
+    %span{class: 'link-icon'}= t('views.layouts.main_page')
+
+  = link_to invoice_index_path, class: 'invoice' do
+    = icon 'my_invoices'
+    %span{class: 'link-icon'}= t('views.layouts.my_invoices')
+
+  = link_to company_properties_path, class: 'companies' do
+    = icon 'companies'
+    %span{class: 'link-icon'}= t('views.layouts.cooperate_companies')
+
+  = link_to exports_path, class: 'export' do
+    = icon 'export_data'
+    %span{class: 'link-icon'}= t('views.layouts.export_data')
+
+  .settlements-container
+    .settlement-text= t('views.layouts.settlements')
+    = link_to week_settlements_path, class: 'week-settlements' do
+      = icon 'week_settlement'
+      %span{class: 'link-icon'}= t('views.layouts.week_settlements')
+
+    = link_to month_settlements_path, class: 'month-settlements' do
+      = icon 'month_settlement'
+      %span{class: 'link-icon'}= t('views.layouts.month_settlements')
