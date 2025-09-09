@@ -1,0 +1,21 @@
+.welcome-section {
+  color: #FFFFFF;
+  text-align: center;
+  margin-top: 4rem;
+
+  @media(max-width: 768px) {
+    display: block;
+    text-align: center;
+    margin-top: 2rem;
+  }
+}
+
+.log-section {
+  text-align: center;
+  color: #FFFFFF;
+
+  @media(max-width: 768px) {
+    position: relative;
+    left: 0;
+  }
+}

@@ -3,6 +3,7 @@ FROM ruby:3.4.1-slim
 ARG RAILS_ENV
 ENV RAILS_ENV="${RAILS_ENV:-development}"
 ENV BUNDLE_PATH="/usr/local/bundle"
+ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /rails
 
@@ -13,17 +14,16 @@ RUN apt-get update -qq && \
     git \
     pkg-config \
     libpq-dev \
-    libvips42 \
     curl \
     gnupg \
+    ca-certificates \
     cron \
     nano \
-tzdata \
+    tzdata \
     netcat-openbsd \
-    tesseract-ocr \
-    tesseract-ocr-pol && \
+    imagemagick && \
   curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-  apt-get install -y nodejs && \
+  apt-get install --no-install-recommends -y nodejs && \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Prepare app directories

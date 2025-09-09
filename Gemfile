@@ -10,7 +10,6 @@ gem 'datagrid'
 gem 'devise'
 gem 'groupdate'
 gem 'kaminari'
-gem 'ruby-vips'
 gem 'shrine'
 gem 'whenever', require: false
 
@@ -20,9 +19,15 @@ gem 'csv'
 
 gem 'dotenv-rails'
 
+gem 'sidekiq-unique-jobs', '~> 8.0'
+
 gem 'inline_svg'
 
-gem 'rtesseract'
+gem 'text'
+
+gem 'redis'
+
+gem 'httparty'
 
 gem 'mini_magick'
 

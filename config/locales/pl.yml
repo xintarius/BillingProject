@@ -18,8 +18,10 @@ pl:
       invoice_types: Typy faktur
       main_page: Strona główna
       my_invoices: Moje faktury
-      week_settlements: Rozliczenia tygodniowe
-      cooperate_companies: Firmy współpracujące
+      settlements: Rozliczenia
+      week_settlements: Tygodniowe
+      month_settlements: Miesięczne
+      cooperate_companies: Kontrahenci
       export_data: Eksport danych
       new_vat_rate: Nowa stawka vat
       landing:
@@ -53,6 +55,7 @@ pl:
         email: 'Email:'
         created_at: 'Dołączono:'
         updated_at: 'Zmodyfikowano:'
+        no_data: Brak
     datagrid:
       users:
         id: id

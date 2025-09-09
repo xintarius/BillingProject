@@ -1,4 +1,3 @@
-require 'rtesseract'
 require 'fileutils'
 require 'mini_magick'
 require_relative '../helpers/connection_helper'
@@ -9,7 +8,9 @@ namespace :invoices do
     Rails.logger.info 'Start checking documents status with initial status...'
     start_date = Time.zone.now.beginning_of_week
     end_date = Time.zone.now.end_of_week
-    invoice = Invoice.where(invoice_status: 'initial', created_at: start_date..end_date).pluck(:file_path)
+    invoice = Invoice.where(invoice_status: 'initial', created_at: start_date..end_date, is_json_parsed: false, ocr_image_phase: nil)
+                     .lock('FOR UPDATE SKIP LOCKED')
+                     .pluck(:file_path)
     Rails.logger.info "Found #{invoice.count} documents with initial status"
     Rails.logger.info 'Start calculate documents...'
     equal_data(invoice)
@@ -44,8 +45,8 @@ namespace :invoices do
   end
 
   def recognize_data(files)
-    files.each do |file_key|
-      ConnectionHelper.safe_push(OcrWorker, file_key)
+    files.each do |file|
+      ConnectionHelper.safe_push(OcrWorker, file)
     end
   end
 

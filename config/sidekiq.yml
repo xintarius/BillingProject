@@ -1,7 +1,9 @@
 :queues:
+  - [ocr, 1]
   - default
   - high
   - low
 :redis:
   url: redis://redis:6379/0
 :verbose: true
+:concurrency: 1

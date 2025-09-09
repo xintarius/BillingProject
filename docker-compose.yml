@@ -2,7 +2,7 @@ version: '3.8'
 services:
   web:
     build: .
-    command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+    command: bundle exec puma -C config/puma.rb
     volumes:
       - ".:/rails"
     ports:
@@ -10,6 +10,7 @@ services:
     environment:
       RAILS_ENV: development
       REDIS_URL: "redis://redis:6379/0"
+      RAILS_IN_CONTAINER: "true"
     env_file:
       - .env
     depends_on:

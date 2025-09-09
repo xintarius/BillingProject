@@ -1,5 +1,4 @@
-.mid-panel
-  .company-container
-    .companies-grid-container
-      = datagrid_table @companies_grid, @assets, html: { class: 'table company-grid'}
-      = paginate(@assets)
+.mid-panel.company-container
+  .companies-grid-container
+    = datagrid_table @companies_grid, @assets, html: { class: 'table company-grid'}
+    = paginate(@assets)

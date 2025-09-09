@@ -9,7 +9,8 @@ Rails.application.routes.draw do
 
   resources :invoice, only: [:index, :new, :create, :show]
 
-  get 'settlement', to: 'settlement#index'
+  get 'week_settlements', to: 'settlement#week_settlements'
+  get 'month_settlements', to: 'settlement#month_settlements'
   get 'users/sign_out', to: 'landing#index'
   get 'users/index', to: 'users#index'
   get 'company_properties', to: 'company_properties#index'

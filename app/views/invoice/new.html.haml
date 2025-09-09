@@ -14,15 +14,17 @@
       = f.label t('views.layouts.invoices.new.invoice_nr')
       = f.text_field :invoice_nr, class: 'invoice-nr-field', data: { 'validation_target': 'invoice_nr' }
       = f.label t('views.layouts.invoices.new.invoice_date')
-      = f.text_field :invoice_date, class: 'invoice-date-field', data: { 'validation_target': 'invoice_date' }
-      .amounts-container
+      .invoice-date-container{ data: { controller: 'datepicker'}}
+        = f.text_field :invoice_date, class: 'invoice-date-field', autocomplete: 'off', data: { input: true, 'validation_target': 'invoice_date', "datepicker-locale": I18n.locale.to_s  }
+        = icon 'calendar', id: 'calendar',  data: { toggle: true }
+      .amounts-container{ data: { controller: 'sum' } }
         .brutto-container
           = f.label t('views.layouts.invoices.new.gross'), class: 'brutto-label'
-          = f.text_field :brutto, data: { 'validation_target': 'brutto' }, class: 'brutto-field'
+          = f.text_field :brutto, class: 'brutto-field', data: { action: 'input->sum#calculateNet', 'sum-target': 'gross', validation_target: 'brutto' }
         .vat-container
           = f.label t('views.layouts.invoices.new.vat'), class: 'vat-label'
-          = f.select :invoice_vat_rate, options_for_select(@vat_types.map { |vat_rate, id| ["#{vat_rate.to_i}%", id] }), class: 'vat-select'
+          = f.select :invoice_vat_rate, options_for_select(@vat_types.map { |vat_rate, id| ["#{vat_rate.to_i}%", id] }), {}, { class: 'vat-select', data: { action: 'change->sum#calculateNet', 'sum-target': 'vat' } }
         .netto-container
           = f.label t('views.layouts.invoices.new.net'), class: 'netto-label'
-          = f.text_field :netto, data: {'validation_target': 'netto' }, class: 'netto-field'
+          = f.text_field :netto, class: 'netto-field', readonly: true, data: { 'sum-target':'net', validation_target: 'netto' }
       = f.submit 'Dodaj fakturę', class: 'button', data: { 'validation_target': 'submit' }

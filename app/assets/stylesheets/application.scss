@@ -17,6 +17,7 @@ $info: $accent-color;
 @import "bootstrap";
 @import "dashboard";
 @import "charts";
+@import "landing";
 
 .button {
     color: white;
@@ -60,21 +61,8 @@ svg .invoice-status {
     height: 100px;
 }
 
-.welcome-section {
-    color: #FFFFFF;
-    text-align: center;
-    margin-top: 8rem;
-}
-
 body {
     background: #2c3034;
-}
-
-.log-section {
-    position: absolute;
-    left: 45%;
-    top: 25%;
-    color: #FFFFFF;
 }
 
 .registration-section {
@@ -128,4 +116,10 @@ select {
 
 .hidden {
     display: none;
+}
+
+input[readonly] {
+    background-color: #eee;
+    color: #666;
+    cursor: not-allowed;
 }

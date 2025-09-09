@@ -45,6 +45,7 @@ class InvoiceController < ApplicationController
                                               invoice_type_id: 1,
                                               brutto: set_brutto,
                                               netto: set_netto,
+                                              user_nip: current_nip,
                                               invoice_vat_rate_id: find_vat.id,
                                               user_id: current_user.id)
     Invoice.create!(invoice_params)
@@ -86,11 +87,14 @@ class InvoiceController < ApplicationController
     Member.create!(user_id: current_user.id, company_id: find_company.id)
   end
 
+  def current_nip
+    current_user.companies.first&.nip
+  end
+
   def convert_description_errors(invoice)
     return if invoice.description_error.blank?
 
-    parse_errors = JSON.parse(invoice.description_error)
-    parse_errors.map { |e| translate_error(e) }.compact
+    invoice.description_error
   end
 
   def translate_error(error)

@@ -17,12 +17,21 @@ $first-color: rgb(33, 33, 33);
 .left-panel {
     display: block;
     background: rgba($first-color, 0.9);
+    width: 15%;
     height: inherit;
 
-    @media(max-width: 768px) {
-        background: $first-color;
-        height: 0;
-    }
+  @media(max-width: 768px) {
+    background: $first-color;
+    height: 0;
+  }
+
+  @media(max-width: 1100px) {
+    width: 40% !important;
+  }
+
+  @media(max-width: 1440px) {
+    width:25%;
+  }
 }
 
 .top-panel {
@@ -33,6 +42,10 @@ $first-color: rgb(33, 33, 33);
 
 .mid-panel {
     display: block;
+
+    @media(max-width: 1100px) {
+        display: grid;
+    }
 }
 
 .main-container {
@@ -72,7 +85,17 @@ $first-color: rgb(33, 33, 33);
 
 .links-container {
     text-align: left;
-    padding: 1rem;
+    padding: 1rem 0 1.5rem 1.5rem;
+    display: inline-grid;
+    width: 100%;
+}
+
+.settlements-container {
+    padding-top: 0.5rem;
+}
+
+.link-icon {
+    padding: 0.25rem 0 0 0.75rem;
 }
 
 .menu {
@@ -119,7 +142,6 @@ a:hover {
 .button {
     margin-top: 2rem;
     cursor: pointer;
-    width: 100%;
 }
 
 .flash {
@@ -136,8 +158,9 @@ a:hover {
     background: red;
 }
 
-.settlements {
+.week-settlements, .month-settlements {
     display: flex;
+    padding-top: 0.5rem;
 }
 
 .user-container .user-grid, .role-container
@@ -212,7 +235,8 @@ a:hover {
     color: white;
 }
 
-.invoice-vat-container:hover, .invoice-type-container:hover {
+.invoice-vat-container:hover, .invoice-type-container:hover, .home:hover,
+.invoice:hover, .companies:hover, .export:hover, .week-settlements:hover, .month-settlements:hover {
     background: rgba(255,255,255, 0.05);
 }
 
@@ -223,13 +247,8 @@ a:hover {
     background: #FFFFFF;
     border-radius: 10px;
 
-    @media(max-width: 768px) {
+    @media(max-width: 1100px) {
         margin: 0;
-    }
-
-    @media(max-width: 430px) {
-        margin: 0;
-        display: block;
     }
 }
 
@@ -266,7 +285,7 @@ a:hover {
 }
 
 .brutto-container {
-    display: block;
+
     padding: 0 0.5rem 0 0;
 }
 
@@ -376,9 +395,10 @@ a:hover {
     gap: 0.5rem;
 
     @media(max-width: 768px) {
-        position: fixed;
+        position: relative;
         display: flex;
-        bottom: 1rem;
+        margin-top: auto;
+        margin-bottom: 2rem;
     }
 
     @media(max-width: 430px) {
@@ -397,6 +417,7 @@ a:hover {
 
 .mobile-menu-links.active {
     transform: translateX(0);
+    overflow: scroll;
 }
 
 .mobile-menu-overlay {
@@ -425,4 +446,39 @@ a:hover {
 
 .menu-main-container {
     display: flex;
+}
+
+.invoice-date-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+#calendar {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-1.4rem);
+    pointer-events: none;
+    color: #888;
+    height: 1.8rem;
+    width: 1.8rem;
+}
+
+.invoice-date-field {
+    padding-right: 0.5rem;
+    width: 100%;
+    cursor: pointer;
+    background-image: none;
+}
+
+.settlement-text {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.home, .invoice, .companies, .export, .week-settlements, .month-settlements {
+    margin: 0.5rem 0 0.5rem 0;
 }

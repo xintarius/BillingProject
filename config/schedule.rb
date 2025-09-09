@@ -10,7 +10,7 @@ set :job_template, nil
 job_type :command, "cd :path && :task :output"
 
 every 1.day, at: '23:59' do
-  rake 'daily_invoice.create_daily_invoices'
+  rake 'daily_invoice:create_daily_invoices'
 end
 
 every 1.hour do
