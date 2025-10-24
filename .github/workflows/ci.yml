@@ -23,6 +23,8 @@ jobs:
       AZURE_API_KEY: ${{ secrets.AZURE_API_KEY }}
       AZURE_API_VERSION: ${{ secrets.AZURE_API_VERSION }}
       AZURE_RECEIPT_ENDPOINT: ${{ secrets.AZURE_RECEIPT_ENDPOINT }}
+      BASE_DELIVERY_URL: ${{ secrets.BASE_DELIVERY_URL }}
+      BILLING_API_KEY: ${{ secrets.BILLING_API_KEY }}
     steps:
       - name: Set up repository
         uses: actions/checkout@v3
