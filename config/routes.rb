@@ -15,8 +15,8 @@ Rails.application.routes.draw do
     get 'users/index', to: 'users#index'
     get 'company_properties', to: 'company_properties#index'
     get 'settings', to: 'settings#index'
-    get 'exports', to: 'exports#index'
 
+    resources :exports, only: [:index, :show]
     resources :invoice_type, only: [:index, :new, :create]
     resources :invoice_vat_rate, only: [:create, :new, :index]
     resources :roles, only: [:create, :new, :index]
