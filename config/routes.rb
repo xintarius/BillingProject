@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
     resources :invoice, only: [:index, :new, :create, :show]
 
+    get 'statistics', to: 'statistics#index'
     get 'week_settlements', to: 'settlement#week_settlements'
     get 'month_settlements', to: 'settlement#month_settlements'
     get 'users/sign_out', to: 'landing#index'
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
     get 'company_properties', to: 'company_properties#index'
     get 'settings', to: 'settings#index'
 
+    resources :receipts, only: [:index]
     resources :exports, only: [:index, :show]
     resources :invoice_type, only: [:index, :new, :create]
     resources :invoice_vat_rate, only: [:create, :new, :index]

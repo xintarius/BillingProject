@@ -7,9 +7,17 @@
     = icon 'my_invoices'
     %span{class: 'link-icon'}= t('views.layouts.my_invoices')
 
+  = link_to receipts_path, class: 'receipt' do
+    = icon 'receipt'
+    %span{class: 'link-icon'}= 'Moje paragony'
+
   = link_to company_properties_path, class: 'companies' do
     = icon 'companies'
     %span{class: 'link-icon'}= t('views.layouts.cooperate_companies')
+
+  = link_to statistics_path, class: 'statistics' do
+    = icon 'statistics'
+    %span{class: 'link-icon'}= "Statystyki"
 
   = link_to exports_path, class: 'export' do
     = icon 'export_data'

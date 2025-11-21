@@ -32,7 +32,7 @@ RUN mkdir -p tmp/cache tmp/pids tmp/sockets && \
 
 # Copy Gemfile and install gems early (for cache)
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler && bundle install --jobs 4 --retry 3
+RUN gem install bundler && bundle install --jobs 4 --retry 3 --with development test
 
 # Copy the rest of the app
 COPY . .
