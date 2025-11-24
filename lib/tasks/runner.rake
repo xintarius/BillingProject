@@ -10,10 +10,11 @@ namespace :runner do
     $stdout.sync = true
     @logger = Logger.new("./log#{task_name.gsub(':', '-')}.log")
 
-      cron_lock task_name.gsub(':', '-') do
-        @logger.info 'Start'
-        Rake::Task[task_name].invoke
-        @logger.info 'end'
-      end
+    cron_lock task_name.gsub(':', '-') do
+      @logger.info 'Start'
+      Rake::Task[task_name].reenable
+      Rake::Task[task_name].invoke
+      @logger.info 'end'
+    end
   end
 end

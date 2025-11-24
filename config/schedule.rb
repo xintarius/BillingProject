@@ -14,11 +14,11 @@ every 1.day, at: '23:59' do
 end
 
 every 1.hour do
-  rake 'runner:run[invoices:check_invoices_status]'
+  rake 'runner:run[invoice:check_invoices_status]'
 end
 
 every 1.day, at: '00:05' do
-  rake 'runner:run[invoices:check_and_raise_invoice_status]'
+  rake 'runner:run[invoice:check_and_raise_invoice_status]'
 end
 
 every 1.hour do
