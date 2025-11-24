@@ -4,7 +4,7 @@
       .left-container
         = icon 'burger_menu', id: 'burger-menu', data: { action: 'click->menu-mobile#toggle' }
       .settings-container
-        = render partial: 'partials/language'
+        = render 'partials/language'
         = icon 'notifications'
         .dropdown{ data: { controller: 'settings' } }
           = icon 'settings', id: 'settings-icon', data: { action: 'click->settings#toggle' }
@@ -18,7 +18,7 @@
       .mobile-menu-links.hidden{ data: { 'menu-mobile-target' => 'nav' } }
         = icon 'ex-close', id: 'ex-close', data: { action: 'click->menu-mobile#closeButton' }
         %h2.menu Menu
-        = render partial: 'dashboard/partials/links'
+        = render 'dashboard/partials/links'
 
         .logged-user-container
           .user-email=t('views.layouts.logged_as')
@@ -28,4 +28,4 @@
   .desktop-only
     .menu-container
       %h2.menu Menu
-      = render partial: 'dashboard/partials/links'
+      = render 'dashboard/partials/links'

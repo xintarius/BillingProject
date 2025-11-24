@@ -1,0 +1,14 @@
+svg.icon {
+    width: 30px;
+    height: 30px;
+    background-color: inherit;
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    min-height: 0;
+}
+
+svg.icon.week_settlements {
+    width: 40px;
+    height: 40px;
+}

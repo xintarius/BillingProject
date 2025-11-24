@@ -1,34 +1,42 @@
 .links-container
   = link_to dashboard_path, class: 'home' do
-    = icon 'dashboard'
+    %svg.icon.dashboard
+      %use{ 'xlink:href' => '#dashboard' }
     %span{class: 'link-icon'}= t('views.layouts.main_page')
 
   = link_to invoice_index_path, class: 'invoice' do
-    = icon 'my_invoices'
+    %svg.icon.my_invoices
+      %use{ 'xlink:href' => '#my_invoices'}
     %span{class: 'link-icon'}= t('views.layouts.my_invoices')
 
   = link_to receipts_path, class: 'receipt' do
-    = icon 'receipt'
+    %svg.icon.receipt
+      %use{ 'xlink:href' => '#receipt'}
     %span{class: 'link-icon'}= 'Moje paragony'
 
   = link_to company_properties_path, class: 'companies' do
-    = icon 'companies'
+    %svg.icon.companies
+      %use{ 'xlink:href' => '#companies'}
     %span{class: 'link-icon'}= t('views.layouts.cooperate_companies')
 
   = link_to statistics_path, class: 'statistics' do
-    = icon 'statistics'
+    %svg.icon.statistics
+      %use{ 'xlink:href' => '#statistics'}
     %span{class: 'link-icon'}= "Statystyki"
 
   = link_to exports_path, class: 'export' do
-    = icon 'export_data'
+    %svg.icon.export_data
+      %use{ 'xlink:href' => '#export_data'}
     %span{class: 'link-icon'}= t('views.layouts.export_data')
 
   .settlements-container
     .settlement-text= t('views.layouts.settlements')
     = link_to week_settlements_path, class: 'week-settlements' do
-      = icon 'week_settlement'
+      %svg.icon.week-settlement
+        %use{ 'xlink:href' => '#week_settlement'}
       %span{class: 'link-icon'}= t('views.layouts.week_settlements')
 
     = link_to month_settlements_path, class: 'month-settlements' do
-      = icon 'month_settlement'
+      %svg.icon.month_settlement
+        %use{ 'xlink:href' => '#month_settlement'}
       %span{class: 'link-icon'}= t('views.layouts.month_settlements')
