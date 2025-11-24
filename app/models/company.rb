@@ -4,11 +4,11 @@ class Company < ApplicationRecord
   has_many :users, through: :members
   before_save :normalize_nip
 
-  ADJECTIVES = %w[Alpha Beta Nova Quantum Dynamic Solid Bright Soft Mega Future Green Blue]
-  NOUNS = %w[Solutions Systems Tech Group Studio Labs Partners Consulting Digital]
-  SUFFIXES = ["Sp. z o.o.", "S.A.", "sp.k."]
+  ADJECTIVES = %w[Alpha Beta Nova Quantum Dynamic Solid Bright Soft Mega Future Green Blue].freeze
+  NOUNS = %w[Solutions Systems Tech Group Studio Labs Partners Consulting Digital].freeze
+  SUFFIXES = ['Sp. z o.o.', 'S.A.', 'sp.k.'].freeze
 
-  def generate_name
+  def self.generate_name
     "#{ADJECTIVES.sample} #{NOUNS.sample} #{SUFFIXES.sample}"
   end
 

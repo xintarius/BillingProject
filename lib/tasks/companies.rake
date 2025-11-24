@@ -4,7 +4,7 @@ namespace :companies do
     @logger.info('Start generate test companies')
     nip = Company.generate_nip
     name = Company.generate_name
-    @logger.info("nip: #{nip} generated")
-    Company.create(nip: nip, company_name: name)
+    Company.create(nip: nip, name: name)
+    @logger.info("Company with nip: #{nip} and name: #{name} generated")
   end
 end
