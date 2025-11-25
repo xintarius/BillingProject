@@ -21,7 +21,7 @@ every 1.day, at: '00:05' do
   rake 'runner:run[invoice:check_and_raise_invoice_status]'
 end
 
-every 1.hour do
+every 1.day, at: '13:00' do
   rake 'runner:run[reports:generate_week_reports]'
 end
 
