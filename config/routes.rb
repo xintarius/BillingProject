@@ -16,9 +16,15 @@ Rails.application.routes.draw do
     get 'users/index', to: 'users#index'
     get 'company_properties', to: 'company_properties#index'
     get 'settings', to: 'settings#index'
+    post 'generate_month_settlement', to: 'settlement#generate_month_settlement'
+
 
     resources :receipts, only: [:index]
-    resources :exports, only: [:index, :show]
+    resources :exports, only: [:index, :show] do
+      member do
+        get 'download', to: 'exports#download'
+      end
+    end
     resources :invoice_type, only: [:index, :new, :create]
     resources :invoice_vat_rate, only: [:create, :new, :index]
     resources :roles, only: [:create, :new, :index]

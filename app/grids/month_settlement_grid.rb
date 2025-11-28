@@ -22,4 +22,8 @@ class MonthSettlementGrid
     end_date = record.month_start.end_of_month.to_date
     "#{start_date.strftime('%d.%m.%Y')} - #{end_date.strftime('%d.%m.%Y')}"
   end
+
+  column '', html: true do |record|
+    render 'settlement/datagrid/generate_month_settlement', record: record
+  end
 end

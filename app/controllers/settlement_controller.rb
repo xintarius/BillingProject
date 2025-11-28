@@ -58,4 +58,12 @@ class SettlementController < ApplicationController
     @assets = @month_settlement_grid.assets.page(params[:page]).per(10)
   end
 
+  def generate_month_settlement
+    start_date = Time.zone.today.beginning_of_month - 1.month
+    end_date = Time.zone.today.end_of_month - 1.month
+    SettlementService.new.generate(start_date, end_date, current_user)
+
+    redirect_to exports_path(id: params[:id])
+  end
+
 end

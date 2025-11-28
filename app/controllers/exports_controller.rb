@@ -10,12 +10,16 @@ class ExportsController < ApplicationController
   end
 
   def show
-    export = current_user.exports.find(params[:id])
-    unless export.file.attached?
-      redirect_to exports_path, alert: "Plik exportu nie jest jeszcze gotowy"
-      return
-    end
-    redirect_to rails_blob_url(export.file, disposition: "attachment")
+    @export = Export.find(params[:id])
   end
 
+  def download
+    @export = Export.find(params[:id])
+    export_name = @export.export_name
+    file_name = "##{export_name}_#{Time.now.to_i}.csv"
+    send_data Base64.strict_decode64(@export.read_data),
+              type: "application/csv; charset=binary",
+              disposition: "attachment",
+              filename: file_name.to_s
+  end
 end

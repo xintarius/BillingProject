@@ -5,7 +5,6 @@ class CreateExports < ActiveRecord::Migration[8.0]
       t.string :subject
       t.text :params
       t.string :error_messages
-      t.text :read_data
       t.string :export_type
       t.references :user, null: false, foreign_key: true
       t.timestamps
