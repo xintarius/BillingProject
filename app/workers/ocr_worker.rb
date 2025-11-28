@@ -1,18 +1,19 @@
 # app/workers/ocr_worker.rb
 class OcrWorker
   include Sidekiq::Worker
+
   sidekiq_options queue: :ocr, retry: 3
 
-  MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
+  MAX_FILE_SIZE = 5 * 1024 * 1024
 
   def perform(file_key)
-    puts "#{DateTime.now}: 📥 Download file: #{file_key}"
+    @logger.info("#{DateTime.now}: Download file: #{file_key}")
 
     file_content = MinioClient.get_object(file_key)
     file_content = resize_image_if_needed(file_content)
 
     if file_content.bytesize > MAX_FILE_SIZE
-      puts "❌ File still too large after resize: #{file_content.bytesize}B"
+      @logger.info("File still too large after resize: #{file_content.bytesize}B")
       invoice = Invoice.find_or_initialize_by(file_path: file_key)
       invoice.update!(
         ocr_image_phase: 'too_large',
@@ -23,10 +24,10 @@ class OcrWorker
 
     # wysyłka do Azure
     response = HTTParty.post(
-      "#{endpoint}/formrecognizer/documentModels/prebuilt-read:analyze?api-version=#{api_version}",
+      "#{azure_endpoint}/formrecognizer/documentModels/prebuilt-read:analyze?api-version=#{api_version}",
       headers: {
-        "Ocp-Apim-Subscription-Key" => api_key,
-        "Content-Type" => content_type(file_key)
+        'Ocp-Apim-Subscription-Key' => api_key,
+        'Content-Type' => content_type(file_key)
       },
       body: file_content
     )
@@ -47,24 +48,24 @@ class OcrWorker
       invoice_data: parsed
     )
 
-    puts "#{DateTime.now}: ✅ OCR saved for #{file_key}"
+    @logger.info("#{DateTime.now}: OCR saved for #{file_key}")
 
-  rescue => e
+  rescue StandardError => e
     invoice = Invoice.find_or_initialize_by(file_path: file_key)
     invoice.update!(
-      ocr_status: "error",
-      invoice_data: { "error" => e.message }
+      ocr_status: 'error',
+      invoice_data: { 'error' => e.message }
     )
-    puts "#{DateTime.now}: ❌ OCR error for #{file_key}: #{e.message}"
+    @logger.info("#{DateTime.now}: OCR error for #{file_key}: #{e.message}")
   end
 
   private
 
   def content_type(file_key)
     case File.extname(file_key).downcase
-    when ".png" then "image/png"
-    when ".jpg", ".jpeg" then "image/jpeg"
-    else "application/octet-stream"
+    when '.png' then 'image/png'
+    when '.jpg', '.jpeg' then 'image/jpeg'
+    else 'application/octet-stream'
     end
   end
 
@@ -73,32 +74,32 @@ class OcrWorker
 
     image = MiniMagick::Image.read(file_content)
     while image.to_blob.bytesize > MAX_FILE_SIZE
-      image.resize "80%"
-      image.quality 80 if image.type.downcase == "jpeg"
+      image.resize '80%'
+      image.quality 80 if image.type.downcase == 'jpeg'
     end
     image.to_blob
   end
 
   def poll_until_done(operation_location)
-      loop do
-        response = HTTParty.get(
-          operation_location,
-          headers: { 'Ocp-Apim-Subscription-Key' => api_key }
-        )
-        parsed = JSON.parse(response.body)
+    loop do
+      response = HTTParty.get(
+        operation_location,
+        headers: { 'Ocp-Apim-Subscription-Key' => api_key }
+      )
+      parsed = JSON.parse(response.body)
 
-        case parsed['status']
-        when 'succeeded'
-          return parsed
-        when 'failed'
-          raise "Azure OCR async operation failed: #{parsed}"
-        else
-          sleep POLL_INTERVAL
-        end
+      case parsed['status']
+      when 'succeeded'
+        return parsed
+      when 'failed'
+        raise "Azure OCR async operation failed: #{parsed}"
+      else
+        sleep POLL_INTERVAL
       end
     end
+  end
 
-  def endpoint
+  def azure_endpoint
     ENV.fetch('AZURE_RECEIPT_ENDPOINT')
   end
 
