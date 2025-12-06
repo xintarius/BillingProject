@@ -6,6 +6,29 @@ class Invoice < ApplicationRecord
   belongs_to :user
   attr_accessor :nip
 
+  before_save :process_azure_json
+
+  INVOICE_NUMBER_KEYS = %w[faktura_nr invoice_number number invoice_no invoice_nr fv].freeze
+
+  def process_azure_json
+    return if azure_invoice_raw_data.blank?
+
+    raw = azure_invoice_raw_data
+
+    self.parsed_azure_invoice_data = {
+      invoice_number: raw['invoice_number'],
+      date: raw['invoice_date'],
+      total_amount: raw.dig('amounts', 'total'),
+      currency: raw['currency'],
+      customer: {
+        name: raw.dig('customer', 'name'),
+        address: raw.dig('customer', 'address')
+      },
+    }
+  rescue => e
+    Rails.logger.error("Błąd parsowania Azure Invoice JSON: #{e.message}")
+    self.parsed_azure_invoice_data = {}
+  end
 
   def self.equal_data(files)
     data_from_minio = MinioClient.list_files('uploads/')
@@ -30,5 +53,5 @@ class Invoice < ApplicationRecord
   rescue StandardError => e
     Rails.debugger.info "Error downloading #{file_key}: #{e.message}"
   end
-  
+
 end

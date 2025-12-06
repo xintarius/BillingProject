@@ -4,20 +4,20 @@ class OcrWorker
 
   sidekiq_options queue: :ocr, retry: 3
 
-  MAX_FILE_SIZE = 5 * 1024 * 1024
-
+  MAX_FILE_SIZE = 4 * 1024 * 1024
+  POLL_INTERVAL = 2
   def perform(file_key)
-    @logger.info("#{DateTime.now}: Download file: #{file_key}")
+    Rails.logger.info("#{DateTime.now}: Download file: #{file_key}")
 
     file_content = MinioClient.get_object(file_key)
     file_content = resize_image_if_needed(file_content)
 
     if file_content.bytesize > MAX_FILE_SIZE
-      @logger.info("File still too large after resize: #{file_content.bytesize}B")
+      Rails.logger.info("File still too large after resize: #{file_content.bytesize}B")
       invoice = Invoice.find_or_initialize_by(file_path: file_key)
       invoice.update!(
         ocr_image_phase: 'too_large',
-        invoice_data: { "error" => "File exceeds size limit after resize" }
+        azure_invoice_raw_data: { 'error' => 'File exceeds size limit after resize' }
       )
       return
     end
@@ -33,7 +33,8 @@ class OcrWorker
     )
 
     if response.code == 202
-      parsed = poll_until_done(response.headers["operation-location"])
+      operation_url = response.headers['operation-location']
+      parsed = poll_until_done(operation_url)
     elsif response.code == 200
       parsed = JSON.parse(response.body)
     else
@@ -45,18 +46,18 @@ class OcrWorker
     invoice = Invoice.find_or_initialize_by(file_path: file_key)
     invoice.update!(
       ocr_image_phase: "done",
-      invoice_data: parsed
+      azure_invoice_raw_data: parsed
     )
 
-    @logger.info("#{DateTime.now}: OCR saved for #{file_key}")
+    Rails.logger.info("#{DateTime.now}: OCR saved for #{file_key}")
 
   rescue StandardError => e
     invoice = Invoice.find_or_initialize_by(file_path: file_key)
     invoice.update!(
-      ocr_status: 'error',
-      invoice_data: { 'error' => e.message }
+      ocr_image_phase: 'error',
+      azure_invoice_raw_data: { 'error' => e.message }
     )
-    @logger.info("#{DateTime.now}: OCR error for #{file_key}: #{e.message}")
+    Rails.logger.info("#{DateTime.now}: OCR error for #{file_key}: #{e.message}")
   end
 
   private
