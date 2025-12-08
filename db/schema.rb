@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_06_143524) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_08_122346) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -68,6 +68,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_06_143524) do
     t.integer "netto_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "exports", force: :cascade do |t|
@@ -114,7 +115,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_06_143524) do
     t.string "invoice_status", default: "initial"
     t.string "description_error"
     t.integer "invoice_vat_rate_id"
-    t.integer "user_id"
     t.string "ocr_image_phase"
     t.jsonb "azure_invoice_raw_data"
     t.string "user_nip"
@@ -124,6 +124,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_06_143524) do
     t.string "invoice_data_nr"
     t.datetime "invoice_data_date", precision: nil
     t.jsonb "parsed_azure_invoice_data"
+    t.integer "user_id"
     t.index ["company_id"], name: "index_invoices_on_company_id"
     t.index ["invoice_type_id"], name: "index_invoices_on_invoice_types_id"
   end

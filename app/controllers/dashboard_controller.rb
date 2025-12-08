@@ -10,11 +10,11 @@ class DashboardController < ApplicationController
 
   def generate_invoice_chart_data
     @invoice_data = {}
-    daily_invoice = DailyInvoice.where(date: data_range)
+    daily_invoice = DailyInvoice.where(date: data_range, user_id: current_user.id)
                                 .select("CONCAT(TO_CHAR(MIN(date), 'YYYY-MM-DD'), ' to ', TO_CHAR(MAX(date), 'YYYY-MM-DD')) AS date,
                                 SUM(brutto_count) as brutto")
                                 .group('date')
-                                .order('date')
+                                .order(:date)
 
     indexed_data = daily_invoice.index_by { |record| record.date.to_s }
     index_data(indexed_data, @invoice_data)
@@ -29,5 +29,9 @@ class DashboardController < ApplicationController
 
   def data_range
     7.days.ago.to_date..1.day.ago.to_date
+  end
+
+  def current_company
+    DailyInvoice.where(user_id: current_user.id)
   end
 end
