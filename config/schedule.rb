@@ -28,3 +28,7 @@ end
 every 1.day, at: '10:00' do
   rake 'runner:run[reports:delete_old_reports]'
 end
+
+every 1.day, at: '12:00' do
+  rake 'runner:run[state_daily_data:repeat_data]'
+end
