@@ -30,8 +30,4 @@ class DashboardController < ApplicationController
   def data_range
     7.days.ago.to_date..1.day.ago.to_date
   end
-
-  def current_company
-    DailyInvoice.where(user_id: current_user.id)
-  end
 end
