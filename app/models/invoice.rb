@@ -13,40 +13,18 @@ class Invoice < ApplicationRecord
   def process_azure_json
     return if azure_invoice_raw_data.blank?
 
-    raw = azure_invoice_raw_data
-    lines = raw.dig('analyzeResult', 'pages', 0, 'lines') || []
+    lines = azure_invoice_raw_data.dig('analyzeResult', 'pages', 0, 'lines') || []
 
-    invoice_number = extract_from_lines(lines, /invoice\s*number/i)
-    date           = extract_from_lines(lines, /date/i)
-    total_amount   = extract_from_lines(lines, /total\s*amount/i)
-    currency       = extract_from_lines(lines, /currency/i)
-    customer_name  = extract_from_lines(lines, /customer\s*name/i)
-    customer_address = extract_from_lines(lines, /customer\s*address/i)
+    content_hash = {}
+    lines.each_with_index do |line, index|
+      content_hash["line_#{index + 1}"] = line['content'].strip
+    end
 
-    self.parsed_azure_invoice_data = {
-      invoice_number: invoice_number,
-      date: date,
-      total_amount: total_amount,
-      currency: currency,
-      customer: {
-        name: customer_name,
-        address: customer_address
-      }
-    }
+    self.parsed_azure_invoice_data = content_hash.to_json
+
   rescue StandardError => e
     Rails.logger.error("Błąd parsowania Azure Invoice JSON: #{e.message}")
-    self.parsed_azure_invoice_data = {}
-  end
-
-  def extract_from_lines(lines, regex)
-    line = lines.find { |l| l['content'] =~ regex }
-    return nil unless line
-
-    if line['content'].include?(':')
-      line['content'].split(':', 2).last.strip
-    else
-      line['content'].strip
-    end
+    self.parsed_azure_invoice_data = {}.to_json
   end
 
   def self.equal_data(files)

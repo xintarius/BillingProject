@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'mini_magick'
 require_relative '../helpers/connection_helper'
-namespace :invoice do
+namespace :invoices do
 
   desc 'Check invoices status'
   task check_invoices_status: :environment do
