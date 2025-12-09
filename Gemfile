@@ -23,6 +23,8 @@ gem 'sidekiq-unique-jobs', '~> 8.0'
 
 gem 'inline_svg'
 
+gem 'rswag'
+
 gem 'text'
 
 gem 'redis'
