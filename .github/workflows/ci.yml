@@ -25,8 +25,9 @@ jobs:
       AZURE_RECEIPT_ENDPOINT: ${{ secrets.AZURE_RECEIPT_ENDPOINT }}
       BASE_DELIVERY_URL: ${{ secrets.BASE_DELIVERY_URL }}
       BILLING_API_KEY: ${{ secrets.BILLING_API_KEY }}
+
     steps:
-      - name: Set up repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Ruby
@@ -37,10 +38,21 @@ jobs:
       - name: Install dependencies
         run: |
           gem install bundler
-          bundle install
-          sudo apt-get update && sudo apt-get install -y \
-            imagemagick \
-      - name: Run tests
+          bundle install --jobs 4 --retry 3
+          sudo apt-get update && sudo apt-get install -y imagemagick libpq-dev
+
+      - name: Setup development DB
         run: |
           bundle exec rake db:create db:migrate RAILS_ENV=development
+
+      - name: Precompile assets (needed for Rswag UI)
+        run: |
+          bundle exec rails assets:precompile RAILS_ENV=development
+
+      - name: Run RSpec tests
+        run: |
           bundle exec rspec
+
+      - name: Generate Rswag Swagger docs
+        run: |
+          bundle exec rake rswag:specs:swaggerize RAILS_ENV=development
