@@ -36,3 +36,7 @@ end
 every 1.day, at: '13:00' do
   rake 'runner:run[sort_data:sort_invoices]'
 end
+
+every 1.day, at: '14:00' do
+  rake 'runner:run[invoice_data:process_invoice_data]'
+end

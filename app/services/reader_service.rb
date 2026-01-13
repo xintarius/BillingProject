@@ -34,7 +34,7 @@ class ReaderService
       invoice.update!(
         description_error: result_nip || 'NIP not found',
         invoice_status: 'failed',
-        ocr_image_phase: 'nip_step_completed' # <-- to dodaj nawet przy błędzie!
+        ocr_image_phase: 'nip_step_completed'
       )
       puts "#{DateTime.now}: ocr not completed, there are problems with the image reading"
       return

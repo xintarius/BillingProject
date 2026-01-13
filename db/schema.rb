@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_09_183920) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_12_123452) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -126,6 +126,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_09_183920) do
     t.jsonb "parsed_azure_invoice_data"
     t.integer "user_id"
     t.jsonb "sorted_data"
+    t.string "user_nip_data"
+    t.string "company_nip_data"
+    t.decimal "vat_type_data"
     t.index ["company_id"], name: "index_invoices_on_company_id"
     t.index ["invoice_type_id"], name: "index_invoices_on_invoice_types_id"
   end
